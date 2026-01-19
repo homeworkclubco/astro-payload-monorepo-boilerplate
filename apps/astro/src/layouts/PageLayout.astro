@@ -1,0 +1,13 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { BaseLayoutProps } from "src/types/layout";
+
+interface Props extends BaseLayoutProps {}
+
+const { title, description, lang, noIndex } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} lang={lang} noIndex={noIndex}>
+  <slot name="head" slot="head" />
+  <slot />
+</BaseLayout>

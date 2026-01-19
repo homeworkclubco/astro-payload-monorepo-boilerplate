@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url'
 import { CloudflareContext, getCloudflareContext } from '@opennextjs/cloudflare'
 import { GetPlatformProxyOptions } from 'wrangler'
 import { r2Storage } from '@payloadcms/storage-r2'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -25,7 +26,6 @@ const cloudflare =
     : await getCloudflareContext({ async: true })
 
 export default buildConfig({
-  serverURL: 'https://astro-payload-monorepo--cms.homework-club.workers.dev',
   admin: {
     user: Users.slug,
     importMap: {
@@ -40,20 +40,21 @@ export default buildConfig({
   },
   db: sqliteD1Adapter({ binding: cloudflare.env.D1 }),
   plugins: [
+    seoPlugin({
+      collections: ['pages'],
+      uploadsCollection: 'media',
+      // generateTitle: ({ doc }) => `${doc.title}`,
+      // generateDescription: ({ doc }) => doc.excerpt,
+      // generateImage: ({ doc }) => doc.image,
+      // tabbedUI: true,
+    }),
     r2Storage({
       bucket: cloudflare.env.R2,
       collections: { media: true },
     }),
   ],
-  cors: [
-    process.env.FRONTEND_URL,
-    'http://localhost:4321'
-  ],
-  csrf: [
-    process.env.FRONTEND_URL,
-    process.env.PAYLOAD_URL,
-    'http://localhost:4321',
-  ],
+  cors: [process.env.FRONTEND_URL, 'http://localhost:4321'],
+  csrf: [process.env.FRONTEND_URL, process.env.PAYLOAD_URL, 'http://localhost:4321'],
 })
 
 // Adapted from https://github.com/opennextjs/opennextjs-cloudflare/blob/d00b3a13e42e65aad76fba41774815726422cc39/packages/cloudflare/src/api/cloudflare-context.ts#L328C36-L328C46
@@ -66,7 +67,7 @@ function getCloudflareContextFromWrangler(): Promise<CloudflareContext> {
         persist: {
           //Point this to the exact same path as your Astro config
           path: '../../.wrangler/state/v3',
-        }
+        },
       } satisfies GetPlatformProxyOptions),
   )
 }

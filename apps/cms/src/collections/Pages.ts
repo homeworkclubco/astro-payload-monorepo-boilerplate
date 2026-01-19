@@ -1,4 +1,4 @@
-import { CollectionConfig, slugField } from 'payload';
+import { CollectionConfig, slugField } from 'payload'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -16,8 +16,7 @@ export const Pages: CollectionConfig = {
     {
       name: 'body',
       type: 'richText',
-      
-    }
+    },
   ],
   access: {
     // Public read for published pages, authenticated for drafts and writes
@@ -64,9 +63,9 @@ export const Pages: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 1000, // Auto-save every 5 seconds while typing
+        interval: 1000, // Auto-save every 1 second while typing
       },
     },
     maxPerDoc: 50,
   },
-};
+}

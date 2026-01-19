@@ -1,0 +1,35 @@
+---
+import type { BaseLayoutProps } from "src/types/layout";
+
+interface Props extends BaseLayoutProps {}
+
+const { title, description, lang = "en", noIndex = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    {title && <title>{title}</title>}
+    {description && <meta name="description" content={description} />}
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100%;
+  }
+</style>

@@ -1,123 +1,46 @@
 ---
-// Disable prerendering - this route must be server-rendered
 export const prerender = false;
-import Layout from "src/layouts/Layout.astro";
 
-// 1. Try to get the Runtime Env (Cloudflare Dashboard)
-// 2. Fallback to Build Time Env (.env file)
-// 3. Fallback to Localhost
-const runtimeEnv = Astro.locals.runtime?.env as any;
+import PreviewLayout from "src/layouts/PreviewLayout.astro";
+import { getPayloadEnv, getAuthHeaders } from "src/lib/payload-config";
+import type { Page } from "src/types/payload";
 
-// Detect if running on Cloudflare Workers domain
-const isWorkersDomain =
-  Astro.url.hostname.includes(".workers.dev") || Astro.url.hostname.includes("pages.devpages.co");
-
-// Fetch draft data from Payload API
-const PAYLOAD_URL =
-  runtimeEnv?.PAYLOAD_URL || import.meta.env.PAYLOAD_URL || "http://localhost:3000";
-
-const PAYLOAD_API_KEY = runtimeEnv?.PAYLOAD_API_KEY || import.meta.env.PAYLOAD_API_KEY;
-
+const env = getPayloadEnv(Astro);
 const { id } = Astro.params;
 
-let page: any | null = null;
+let page: Page | null = null;
 let error: string | null = null;
 
-// Build headers based on environment
-const headers: Record<string, string> = {
-  cache: "no-store",
-};
-
-if (isWorkersDomain && PAYLOAD_API_KEY) {
-  // Use API key authentication on Workers domains
-  headers.Authorization = `users API-Key ${PAYLOAD_API_KEY}`;
-  console.log("Using API key authentication (Workers domain detected)");
-} else {
-  // Use cookie authentication for local development and custom domains
-  const cookie = Astro.request.headers.get("Cookie");
-  if (cookie) {
-    headers.Cookie = cookie;
-    console.log("Using cookie authentication");
-  } else {
-    console.log("No cookie found - authentication may fail");
-  }
-}
+const headers = getAuthHeaders(env, Astro.request.headers.get("Cookie"));
+headers.cache = "no-store";
 
 try {
-  // Fetch with draft=true to get draft version
-  const response = await fetch(`${PAYLOAD_URL}/api/pages/${id}?draft=true&depth=2`, {
-    headers,
-  });
+  const response = await fetch(
+    `${env.payloadUrl}/api/pages/${id}?draft=true&depth=2`,
+    { headers },
+  );
 
   if (response.ok) {
     page = await response.json();
-    // CRITICAL CHECK:
-    // If we are authenticated, Payload usually returns `_status: 'draft'`
-    // or the updated content.
-    console.log("Page Title in Data:", page.title);
-    console.log("Page Status:", page._status); // Check if this says 'draft' or 'published'
   } else {
     error = `Failed to fetch preview: ${response.statusText}`;
-    console.error(`Preview fetch failed: ${response.status} ${response.statusText}`);
   }
 } catch (e) {
   error = `Error: ${e instanceof Error ? e.message : String(e)}`;
 }
-
-const { title, content, meta } = page || {};
 ---
 
-<Layout>
-  {/* Store the calculated URL in a data attribute on a hidden or wrapper element */}
-  <div id="payload-config" data-url={PAYLOAD_URL} style="display: none;"></div>
-
-  {
-    error && (
-      <div style="padding: 2rem; color: red; background: #fee; border: 2px solid red; margin: 2rem;">
-        <strong>Preview Error:</strong> {error}
-      </div>
-    )
-  }
-
+<PreviewLayout
+  title={page?.title}
+  payloadUrl={env.payloadUrl}
+  error={error}
+>
   {
     page && (
-      <div>
+      <article>
         <h1>{page.title}</h1>
         <div>{JSON.stringify(page.body)}</div>
-      </div>
+      </article>
     )
   }
-
-  <!-- Live Preview Client Script -->
-  <!-- Refreshes the page for live preview when a document is saved in the CMS -->
-  <!-- Inspired by https://github.com/jhb-software/payload-astro-website-template -->
-  <script>
-    import { isDocumentEvent, ready } from "@payloadcms/live-preview";
-
-    // READ THE RUNTIME URL FROM THE DOM
-    const configEl = document.getElementById("payload-config");
-    const serverURL = configEl?.dataset.url || "http://localhost:3000";
-
-    // const serverURL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000'
-
-    function sendReady() {
-      ready({ serverURL });
-    }
-
-    function onMessage(event: MessageEvent) {
-      if (isDocumentEvent(event, serverURL)) {
-        // Reload the page when document changes are saved
-        // This ensures all block operations (add/remove/reorder) work correctly
-        window.location.reload();
-      }
-    }
-
-    window.addEventListener("message", onMessage);
-
-    if (document.readyState === "loading") {
-      window.addEventListener("DOMContentLoaded", sendReady, { once: true });
-    } else {
-      sendReady();
-    }
-  </script>
-</Layout>
+</PreviewLayout>

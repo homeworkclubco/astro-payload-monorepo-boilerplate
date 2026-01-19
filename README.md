@@ -5,6 +5,7 @@ A modern monorepo setup combining Astro for the frontend and Payload CMS for the
 ## Architecture Overview
 
 This monorepo contains two main applications:
+
 - **`apps/astro`** - Astro frontend application
 - **`apps/cms`** - Payload CMS backend (Next.js)
 
@@ -127,7 +128,7 @@ When making changes to the database schema:
 
 ```bash
 cd apps/cms
-pnpm run payload migrate:create
+pnpm run payload migrate:create <message>
 ```
 
 ### Applying Migrations
@@ -346,16 +347,19 @@ astro-payload-monorepo-boilerplate/
 ## Future Improvements
 
 ### Preview Authentication
+
 - Domain-aware authentication switching
 - Better error handling and debugging
 - Automatic fallback mechanisms
 
 ### Database Management
+
 - Automated backup scripts
 - Migration rollback capabilities
 - Database seeding utilities
 
 ### Development Experience
+
 - Hot reloading for type generation
 - Improved local development tooling
 - Better error messages and debugging tools
