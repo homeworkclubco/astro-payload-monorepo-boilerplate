@@ -1,0 +1,3 @@
+packages:
+  - "apps/astro"
+  - "apps/cms"

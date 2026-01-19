@@ -1,0 +1,21 @@
+{
+  "name": "astro-payload-monorepo-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev:astro": "cd apps/astro && pnpm run dev",
+    "dev:cms": "cd apps/cms && pnpm run dev",
+    "deploy:astro": "cd apps/astro && pnpm run deploy",
+    "deploy:cms": "cd apps/cms && pnpm run deploy",
+    "migrate:db:local-to-prod": "echo '⚠️  This will overwrite production data. Continue? (y/N)' && read -r confirm && if [ \"$confirm\" = \"y\" ] || [ \"$confirm\" = \"Y\" ]; then wrangler d1 export astro-payload-monorepo-boilerplate-prod --local --output=/tmp/local-export.sql && echo 'Export complete. Now importing to production...' && wrangler d1 import astro-payload-monorepo-boilerplate-prod --remote /tmp/local-export.sql && echo '✅ Migration complete'; else echo '❌ Migration cancelled'; fi",
+    "migrate:db:prod-to-local": "echo '⚠️  This will overwrite local data. Continue? (y/N)' && read -r confirm && if [ \"$confirm\" = \"y\" ] || [ \"$confirm\" = \"Y\" ]; then wrangler d1 export astro-payload-monorepo-boilerplate-prod --remote --output=/tmp/prod-export.sql && echo 'Export complete. Now importing to local...' && wrangler d1 import astro-payload-monorepo-boilerplate-prod --local /tmp/prod-export.sql && echo '✅ Migration complete'; else echo '❌ Migration cancelled'; fi",
+    "migrate:r2:local-to-prod": "echo '⚠️  This will sync local R2 to production. Continue? (y/N)' && read -r confirm && if [ \"$confirm\" = \"y\" ] || [ \"$confirm\" = \"Y\" ]; then rclone sync .wrangler/r2/buckets/astro-payload-monorepo-boilerplate-prod r2:astro-payload-monorepo-boilerplate-prod && echo '✅ R2 sync complete'; else echo '❌ Sync cancelled'; fi",
+    "migrate:r2:prod-to-local": "echo '⚠️  This will sync production R2 to local. Continue? (y/N)' && read -r confirm && if [ \"$confirm\" = \"y\" ] || [ \"$confirm\" = \"Y\" ]; then rclone sync r2:astro-payload-monorepo-boilerplate-prod .wrangler/r2/buckets/astro-payload-monorepo-boilerplate-prod && echo '✅ R2 sync complete'; else echo '❌ Sync cancelled'; fi",
+    "migrate:full:local-to-prod": "pnpm run migrate:db:local-to-prod && pnpm run migrate:r2:local-to-prod",
+    "migrate:full:prod-to-local": "pnpm run migrate:db:prod-to-local && pnpm run migrate:r2:prod-to-local"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.23.0"
+}

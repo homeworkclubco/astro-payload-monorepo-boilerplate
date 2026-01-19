@@ -1,0 +1,123 @@
+---
+// Disable prerendering - this route must be server-rendered
+export const prerender = false;
+import Layout from 'src/layouts/Layout.astro'
+
+
+// 1. Try to get the Runtime Env (Cloudflare Dashboard)
+// 2. Fallback to Build Time Env (.env file)
+// 3. Fallback to Localhost
+const runtimeEnv = Astro.locals.runtime?.env as any;
+
+// Fetch draft data from Payload API
+const PAYLOAD_URL = 
+  runtimeEnv?.PAYLOAD_URL || 
+  import.meta.env.PAYLOAD_URL || 
+  'http://localhost:3000';
+
+  const PAYLOAD_API_KEY = 
+  runtimeEnv?.PAYLOAD_API_KEY || 
+  import.meta.env.PAYLOAD_API_KEY;
+
+  const { id } = Astro.params
+
+  const cookie = Astro.request.headers.get('Cookie');
+console.log('--- DEBUG COOKIE ---');
+console.log('Incoming Cookie length:', cookie ? cookie.length : 'No cookie found');
+console.log('Fetching URL:', `${PAYLOAD_URL}/api/pages/${id}?draft=true`);
+
+
+
+let page: any | null = null
+let error: string | null = null
+
+try {
+  // Fetch with draft=true to get draft version
+  const response = await fetch(
+    `${PAYLOAD_URL}/api/pages/${id}?draft=true&depth=2`,
+    {
+      headers: {
+        // Add this line to force a fresh request every time
+        cache: 'no-store',
+        // Forward cookies for authentication
+        // 'Cookie': Astro.request.headers.get('Cookie') || '',
+        // Use the API Key instead of the browser cookie
+        // Note: Check your Payload collection slug. Usually it is 'users'.
+        'Authorization': `users API-Key ${PAYLOAD_API_KEY}`,
+      },
+    }
+  )
+
+  if (response.ok) {
+    page = await response.json()
+    // CRITICAL CHECK:
+    // If we are authenticated, Payload usually returns `_status: 'draft'` 
+    // or the updated content.
+    console.log('Page Title in Data:', page.title); 
+    console.log('Page Status:', page._status); // Check if this says 'draft' or 'published'
+  } else {
+    error = `Failed to fetch preview: ${response.statusText}`
+    console.error(`Preview fetch failed: ${response.status} ${response.statusText}`);
+  }
+} catch (e) {
+  error = `Error: ${e instanceof Error ? e.message : String(e)}`
+}
+
+const { title, content, meta } = page || {}
+
+
+---
+
+<Layout>
+    {/* Store the calculated URL in a data attribute on a hidden or wrapper element */}
+  <div id="payload-config" data-url={PAYLOAD_URL} style="display: none;"></div>
+
+  {error && (
+    <div style="padding: 2rem; color: red; background: #fee; border: 2px solid red; margin: 2rem;">
+      <strong>Preview Error:</strong> {error}
+    </div>
+  )}
+
+  {page && (
+    <div>
+      <h1>{page.title}</h1>
+      <div>{JSON.stringify(page.body)}</div>
+    </div>
+  )}
+
+
+
+  <!-- Live Preview Client Script -->
+  <!-- Refreshes the page for live preview when a document is saved in the CMS -->
+  <!-- Inspired by https://github.com/jhb-software/payload-astro-website-template -->
+  <script>
+    import { isDocumentEvent, ready } from '@payloadcms/live-preview'
+
+    // READ THE RUNTIME URL FROM THE DOM
+    const configEl = document.getElementById('payload-config');
+    const serverURL = configEl?.dataset.url || 'http://localhost:3000';
+
+    // const serverURL = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000'
+
+    function sendReady() {
+      ready({ serverURL })
+    }
+
+    function onMessage(event: MessageEvent) {
+      if (isDocumentEvent(event, serverURL)) {
+        // Reload the page when document changes are saved
+        // This ensures all block operations (add/remove/reorder) work correctly
+        window.location.reload()
+      }
+    }
+
+    window.addEventListener('message', onMessage)
+
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', sendReady, { once: true })
+    } else {
+      sendReady()
+    }
+  </script>
+    
+</Layout>
