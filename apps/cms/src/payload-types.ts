@@ -89,8 +89,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -379,6 +383,121 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  general: {
+    /**
+     * Select which page should be displayed as the homepage
+     */
+    homepage?: (number | null) | Page;
+    /**
+     * The name of your website
+     */
+    siteName: string;
+    /**
+     * The full URL of your website (e.g., https://kurtstubbings.com)
+     */
+    siteUrl: string;
+  };
+  seo?: {
+    /**
+     * Default meta description (max 160 characters)
+     */
+    defaultDescription?: string | null;
+    /**
+     * Default Open Graph image (1200x630px recommended)
+     */
+    defaultImage?: (number | null) | Media;
+    /**
+     * Site favicon (32x32px recommended)
+     */
+    favicon?: (number | null) | Media;
+  };
+  social?: {
+    /**
+     * Twitter username (without @)
+     */
+    twitterHandle?: string | null;
+    facebookUrl?: string | null;
+    instagramUrl?: string | null;
+    linkedinUrl?: string | null;
+    youtubeUrl?: string | null;
+  };
+  /**
+   * Information for structured data (Schema.org)
+   */
+  organization?: {
+    name?: string | null;
+    /**
+     * Logo for structured data (square format recommended)
+     */
+    logo?: (number | null) | Media;
+    contactEmail?: string | null;
+    contactPhone?: string | null;
+    address?: {
+      streetAddress?: string | null;
+      city?: string | null;
+      state?: string | null;
+      postalCode?: string | null;
+      country?: string | null;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  general?:
+    | T
+    | {
+        homepage?: T;
+        siteName?: T;
+        siteUrl?: T;
+      };
+  seo?:
+    | T
+    | {
+        defaultDescription?: T;
+        defaultImage?: T;
+        favicon?: T;
+      };
+  social?:
+    | T
+    | {
+        twitterHandle?: T;
+        facebookUrl?: T;
+        instagramUrl?: T;
+        linkedinUrl?: T;
+        youtubeUrl?: T;
+      };
+  organization?:
+    | T
+    | {
+        name?: T;
+        logo?: T;
+        contactEmail?: T;
+        contactPhone?: T;
+        address?:
+          | T
+          | {
+              streetAddress?: T;
+              city?: T;
+              state?: T;
+              postalCode?: T;
+              country?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -30,7 +30,7 @@ export const SiteSettings: GlobalConfig = {
           name: 'siteName',
           type: 'text',
           label: 'Site Name',
-          defaultValue: 'Salo',
+          defaultValue: 'Boilerplate',
           required: true,
           admin: {
             description: 'The name of your website',
@@ -41,9 +41,9 @@ export const SiteSettings: GlobalConfig = {
           type: 'text',
           label: 'Site URL',
           required: true,
-          defaultValue: 'https://salo.uk',
+          defaultValue: 'https://kurtstubbings.com',
           admin: {
-            description: 'The full URL of your website (e.g., https://salo.com)',
+            description: 'The full URL of your website (e.g., https://kurtstubbings.com)',
           },
         },
       ],
@@ -53,14 +53,6 @@ export const SiteSettings: GlobalConfig = {
       type: 'group',
       label: 'SEO Defaults',
       fields: [
-        {
-          name: 'defaultTitle',
-          type: 'text',
-          label: 'Default Title',
-          admin: {
-            description: 'Default title for pages without a specific SEO title',
-          },
-        },
         {
           name: 'defaultDescription',
           type: 'textarea',

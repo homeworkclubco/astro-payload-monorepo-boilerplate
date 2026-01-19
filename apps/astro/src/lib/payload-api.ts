@@ -63,3 +63,29 @@ export async function getPages(
 
   return fetchPayloadData<APIResponse<Page>>(`pages?${query}`, config);
 }
+
+/**
+ * Get all published pages for static generation
+ */
+export async function getPublishedPages(
+  config: PayloadConfig,
+): Promise<Page[]> {
+  const response = await getPages(config, {
+    _status: { equals: "published" },
+  });
+  return response?.docs ?? [];
+}
+
+/**
+ * Get a single page by slug
+ */
+export async function getPageBySlug(
+  slug: string,
+  config: PayloadConfig,
+): Promise<Page | null> {
+  const response = await getPages(config, {
+    slug: { equals: slug },
+    _status: { equals: "published" },
+  });
+  return response?.docs?.[0] ?? null;
+}

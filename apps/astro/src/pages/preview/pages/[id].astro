@@ -2,44 +2,49 @@
 export const prerender = false;
 
 import PreviewLayout from "src/layouts/PreviewLayout.astro";
-import { getPayloadEnv, getAuthHeaders } from "src/lib/payload-config";
+import { createPreviewClient } from "src/lib/payload";
 import type { Page } from "src/types/payload";
 
-const env = getPayloadEnv(Astro);
 const { id } = Astro.params;
+const payloadUrl = import.meta.env.PAYLOAD_URL; // Needed for the Layout prop
 
 let page: Page | null = null;
 let error: string | null = null;
 
-const headers = getAuthHeaders(env, Astro.request.headers.get("Cookie"));
-headers.cache = "no-store";
-
 try {
-  const response = await fetch(
-    `${env.payloadUrl}/api/pages/${id}?draft=true&depth=2`,
-    { headers },
-  );
+  if (!id) throw new Error("No Page ID provided");
 
-  if (response.ok) {
-    page = await response.json();
+  // 1. Create the authenticated client
+  // (Throws automatically if no Cookie or API Key is found)
+  const client = createPreviewClient(Astro);
+
+  // 2. Fetch the draft
+  // Note: We explicitly request depth: 2 to match your old logic
+  const result = await client.getPageById(id, { depth: 2 });
+
+  if (result.success) {
+    // Cast the result to 'Page' since getPageById returns 'any'
+    page = result.data as Page;
   } else {
-    error = `Failed to fetch preview: ${response.statusText}`;
+    // Extract the clean error message from our Result object
+    error = `Failed to fetch preview: ${result.error.message}`;
+    console.error("Preview Fetch Error:", result.error);
   }
 } catch (e) {
+  // Catches:
+  // 1. "No valid authentication method found" (from factory)
+  // 2. Network crashes
   error = `Error: ${e instanceof Error ? e.message : String(e)}`;
 }
 ---
 
-<PreviewLayout
-  title={page?.title}
-  payloadUrl={env.payloadUrl}
-  error={error}
->
+<PreviewLayout title={page?.title} payloadUrl={payloadUrl} error={error}>
   {
     page && (
       <article>
         <h1>{page.title}</h1>
-        <div>{JSON.stringify(page.body)}</div>
+        {/* If you have a block renderer, use it here */}
+        <div>{JSON.stringify(page, null, 2)}</div>
       </article>
     )
   }

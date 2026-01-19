@@ -1,0 +1,83 @@
+---
+import PageLayout from "src/layouts/PageLayout.astro";
+import { createPublicClient } from "@/lib/payload";
+import type { Page, SiteSetting } from "../types/payload";
+
+export async function getStaticPaths() {
+  const client = createPublicClient();
+
+  const [pagesResult, settingsResult] = await Promise.all([
+    client.findCollection<Page>("pages", {
+      limit: 1000,
+      where: { _status: { equals: "published" } },
+    }),
+    client.getSiteSettings(),
+  ]);
+
+  if (!pagesResult.success) throw new Error("Failed to build pages");
+
+  // 1. Determine Homepage ID
+  const homepageId = settingsResult.success ? settingsResult.data.general?.homepage : null;
+
+  // 2. Generate Paths
+  const paths = pagesResult.data.docs.map((page) => {
+    // Try ID match first, fallback to slug 'home'
+    const isHomepage = page.id === homepageId || page.slug === "home";
+
+    return {
+      params: { slug: isHomepage ? undefined : page.slug },
+      props: { page },
+    };
+  });
+
+  // 3. THE SAFETY NET: Check if a root route exists
+  const hasRoot = paths.some((p) => p.params.slug === undefined);
+
+  if (!hasRoot) {
+    console.warn("⚠️ NO HOMEPAGE FOUND: Generating fallback placeholder.");
+
+    // Inject a manual placeholder page so the site successfully builds
+    paths.push({
+      params: { slug: undefined },
+      props: {
+        page: {
+          id: 0,
+          title: "Setup Required",
+          slug: "home",
+          updatedAt: new Date().toISOString(),
+          createdAt: new Date().toISOString(),
+          _status: "published",
+          layout: [
+            // Optional: Inject a block here if your types allow it
+            // { blockType: 'content', richText: ... }
+          ],
+        } as unknown as Page, // Cast as Page to satisfy TypeScript
+      },
+    });
+  }
+
+  return paths;
+}
+
+const { page } = Astro.props;
+---
+
+<PageLayout title={page.title}>
+  {/* Render a warning banner if we are using the fallback page */}
+  {
+    page.id === 0 && (
+      <div style="background: #fee2e2; color: #991b1b; padding: 2rem; text-align: center;">
+        <h2>Homepage Not Configured</h2>
+        <p>
+          Please go to <strong>Site Settings</strong> in Payload and select a homepage.
+        </p>
+      </div>
+    )
+  }
+
+  <article>
+    <h1>{page.title}</h1>
+    <!-- {page.layout?.map((block) => <div>{/* Your Block Renderer */}</div>)} -->
+    <pre>{JSON.stringify(page, null, 2)}</pre>
+  </article>
+</PageLayout>

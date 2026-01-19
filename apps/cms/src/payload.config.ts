@@ -12,6 +12,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
+import { SiteSettings } from './globals'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,13 +27,15 @@ const cloudflare =
     : await getCloudflareContext({ async: true })
 
 export default buildConfig({
+  collections: [Users, Media, Pages],
+  globals: [SiteSettings],
   admin: {
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Pages],
+
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -43,7 +46,7 @@ export default buildConfig({
     seoPlugin({
       collections: ['pages'],
       uploadsCollection: 'media',
-      // generateTitle: ({ doc }) => `${doc.title}`,
+      generateTitle: ({ doc }) => `${doc.title}`,
       // generateDescription: ({ doc }) => doc.excerpt,
       // generateImage: ({ doc }) => doc.image,
       // tabbedUI: true,
