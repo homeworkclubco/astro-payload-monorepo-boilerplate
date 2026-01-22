@@ -2,6 +2,7 @@
 import PageLayout from "src/layouts/PageLayout.astro";
 import { createPublicClient } from "@/lib/payload";
 import type { Page, SiteSetting } from "../types/payload";
+import { Button, Section } from "@viewingstudio/ui";
 
 export async function getStaticPaths() {
   const client = createPublicClient();
@@ -79,5 +80,11 @@ const { page } = Astro.props;
     <h1>{page.title}</h1>
     <!-- {page.layout?.map((block) => <div>{/* Your Block Renderer */}</div>)} -->
     <pre>{JSON.stringify(page, null, 2)}</pre>
+    <Section>
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="text">Text</Button>
+    </Section>
   </article>
 </PageLayout>

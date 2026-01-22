@@ -16,4 +16,12 @@ export default defineConfig({
 
     imageService: "cloudflare",
   }),
+  vite: {
+    server: {
+      watch: {
+        // Tells Vite to watch the shared package for changes
+        ignored: ["!**/packages/ui/**"],
+      },
+    },
+  },
 });

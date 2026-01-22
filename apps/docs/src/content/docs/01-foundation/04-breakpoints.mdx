@@ -1,0 +1,107 @@
+---
+title: Breakpoints
+description: Responsive design tokens using PostCSS Custom Media.
+sidebar:
+  order: 4
+---
+
+We use [CSS Custom Media Queries](https://www.w3.org/TR/mediaqueries-5/#custom-media) to manage responsive breakpoints. This allows us to use semantic names like `--sm` instead of hardcoded pixel values like `768px`.
+
+## Philosophy: Intrinsic Design
+
+We design "with the grain" of the internet.
+
+Instead of forcing layouts to change abruptly at arbitrary pixel values (breakpoints), we prefer **Intrinsic Web Design**. We define how content should behave based on its own constraints (like readability and minimum comfortable width), and let the browser determine the layout based on available space.
+
+This approach often eliminates the need for media queries entirely.
+
+### 1. The RAM Layout (Repeat, Auto, Minmax)
+
+For grids and collections, we prefer the "RAM" pattern over manual breakpoint overrides. This allows items to flow naturally from desktop to mobile without a single `@media` line.
+
+```css
+.grid {
+  display: grid;
+  /* Creates as many columns as will fit, 
+     but never lets a column get smaller than 300px.
+  */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+}
+```
+
+### 2. Character Units (`ch`)
+
+We use the `ch` unit to govern width based on readability, not device width. By setting constraints like `max-width: 65ch`, we ensure content is legible on a 27" monitor without needing to write specific overrides for a standard laptop screen.
+
+### 3. Desktop First (Graceful Degradation)
+
+When breakpoints _are_ required, we follow a **Desktop First** methodology.
+
+- **Logic:** We design the ideal, high-fidelity experience (Desktop) first, where complexity is highest.
+- **Method:** We use `max-width` media queries (e.g., `@media (--md-down)`) to provide "Graceful Degradation" for constrained environments.
+- **Why:** It is cleaner to linearize a complex grid for mobile (subtraction) than to invent complex layout logic starting from a mobile stack (addition).
+
+## Breakpoint Tokens
+
+Use these tokens primarily for **overrides** when intrinsic sizing isn't enough (e.g., hiding a sidebar, changing a navigation pattern, or adjusting font scales).
+
+| Token        | Type      | Value    | Description                   |
+| :----------- | :-------- | :------- | :---------------------------- |
+| `--2xs`      | min-width | `420px`  | Large phones                  |
+| `--2xs-down` | max-width | `419px`  | Small phones only             |
+| `--xs`       | min-width | `520px`  | Phablets                      |
+| `--xs-down`  | max-width | `519px`  | Phones only                   |
+| `--sm`       | min-width | `768px`  | Tablets (Portrait)            |
+| `--sm-down`  | max-width | `767px`  | Mobile devices                |
+| `--md`       | min-width | `1024px` | Tablets (Landscape) / Laptops |
+| `--md-down`  | max-width | `1023px` | Touch devices mostly          |
+| `--lg`       | min-width | `1280px` | Desktop                       |
+| `--lg-down`  | max-width | `1279px` | Laptops and below             |
+| `--xl`       | min-width | `1640px` | Large Screens                 |
+| `--xl-down`  | max-width | `1639px` | Standard Desktop and below    |
+| `--2xl`      | min-width | `1920px` | Ultra Wide                    |
+
+## Usage
+
+You can use these tokens directly in any `<style>` block or CSS file. You **do not** need to import them.
+
+```css
+.card {
+  font-size: 1rem;
+  padding: var(--space-md);
+}
+
+/* "If screen is bigger than Tablet..." */
+@media (--sm) {
+  .card {
+    font-size: 1.25rem;
+    padding: var(--space-lg);
+  }
+}
+
+/* "If screen is smaller than Desktop..." */
+@media (--lg-down) {
+  .card {
+    border: none;
+  }
+}
+```
+
+## How it works (The Architecture)
+
+You might notice there are no `@import` statements in the code above. This works because of our **PostCSS Configuration**.
+
+### 1. `postcss-global-data`
+
+Usually, a CSS file is processed in isolation, so it doesn't know variables defined in other files. We use `@csstools/postcss-global-data` to inject our `packages/ui/src/css/breakpoints.css` file into the memory of every single style block before it compiles.
+
+- **Result:** The tokens are globally available without manual imports.
+
+### 2. `postcss-custom-media`
+
+Browsers do not natively support `@media (--sm)` yet. We use `postcss-custom-media` to rewrite your CSS at build time.
+
+- **Input:** `@media (--sm) { ... }`
+- **Output:** `@media (min-width: 768px) { ... }`
+
+This gives us the Developer Experience of future CSS features with the browser compatibility of standard CSS.

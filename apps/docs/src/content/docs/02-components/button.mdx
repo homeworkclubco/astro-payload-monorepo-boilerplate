@@ -1,0 +1,182 @@
+---
+title: Button
+description: The primary interactive element for user actions.
+sidebar:
+  order: 1
+---
+
+import { Button, Playground } from "@viewingstudio/ui";
+import { Code } from "@astrojs/starlight/components";
+// import buttonCode from "../../../../../../packages/ui/src/components/Button.astro?raw";
+
+The Button component triggers an action or event, such as submitting a form, opening a dialog, or canceling an action. It supports polymorphism, allowing it to render as a `<button>`, `<a>`, or `<span>`.
+
+## Variants
+
+We support four visual hierarchies.
+
+<Playground>
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+    <Button variant="primary">Primary</Button>
+    <Button variant="secondary">Secondary</Button>
+    <Button variant="ghost">Ghost</Button>
+    <Button variant="text">Text Link</Button>
+  </div>
+</Playground>
+
+```tsx
+<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="text">Text Link</Button>
+```
+
+## Sizes
+
+Buttons are available in three fixed sizes.
+
+<Playground>
+  <div style="display: flex; gap: 1rem; align-items: center;">
+    <Button size="sm">Small</Button>
+    <Button size="md">Medium</Button>
+    <Button size="lg">Large</Button>
+  </div>
+</Playground>
+
+```tsx
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+```
+
+## Icons
+
+Buttons support a single slot for composition. You can place icons before or after the text, and flexbox handles the spacing automatically.
+
+<Playground>
+<div style="display: flex; gap: 1rem;">
+{/* Example using a simple SVG, usually you'd use your Icon component */}
+<Button variant="secondary">
+<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+Go Back
+</Button>
+
+<Button variant="primary">
+  Next Step
+  <svg
+    width="1em"
+    height="1em"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M5 12h14" />
+    <path d="M12 5l7 7-7 7" />
+  </svg>
+</Button>
+</div>
+</Playground>
+
+### Icon Only
+
+Use the `iconOnly` prop to enforce a square aspect ratio.
+
+It can be used in combination with the different variants and sizes
+
+<Playground>
+  <div>
+    <Button variant="secondary" iconOnly aria-label="Menu">
+      <svg
+        width="1.2em"
+        height="1.2em"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </Button>
+  </div>
+  <div>
+    <Button variant="ghost" size="lg" iconOnly aria-label="Menu">
+      <svg
+        width="1.2em"
+        height="1.2em"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </Button>
+  </div>
+</Playground>
+
+```tsx
+<Button iconOnly aria-label="Menu">
+  <Icon name="menu" />
+</Button>
+
+<Button variant="ghost" size="lg" iconOnly aria-label="Menu">
+  <Icon name="menu" />
+</Button>
+```
+
+## Layout & Responsive
+
+### Full Width
+
+Forces the button to take up 100% of its container.
+
+<Playground>
+  <Button fullWidth>Sign In</Button>
+</Playground>
+
+### Mobile Only Full Width
+
+The button behaves normally on desktop but expands to full width on screens smaller than the `sm` breakpoint.
+
+<Playground>
+  <Button fullWidth="mobile-only">Full Width on Mobile</Button>
+</Playground>
+
+```tsx
+<Button fullWidth="mobile-only">Checkout</Button>
+```
+
+## Polymorphism
+
+The component automatically renders as an `<a>` tag if you provide an `href`. You can also force specific tags using the `as` prop.
+
+<Playground>
+  <div style="display: flex; gap: 1rem;">
+    <Button href="#" target="_blank">
+      I am an Anchor
+    </Button>
+    <Button as="span" variant="ghost">
+      I am a Span
+    </Button>
+  </div>
+</Playground>
+
+## API Reference
+
+| Prop        | Type                                            | Default     | Description                          |
+| :---------- | :---------------------------------------------- | :---------- | :----------------------------------- |
+| `variant`   | `'primary' \| 'secondary' \| 'ghost' \| 'text'` | `'primary'` | The visual style of the button.      |
+| `size`      | `'sm' \| 'md' \| 'lg'`                          | `'md'`      | Controls padding and font-size.      |
+| `href`      | `string`                                        | `-`         | If present, renders as an `<a>` tag. |
+| `fullWidth` | `boolean \| 'mobile-only'`                      | `false`     | Controls width behavior.             |
+| `iconOnly`  | `boolean`                                       | `false`     | Enforces square aspect ratio.        |
+| `as`        | `'button' \| 'a' \| 'span'`                     | `-`         | Overrides the HTML tag.              |
+
+{/* <Code code={buttonCode} /> */}

@@ -1,0 +1,210 @@
+---
+import Section from "./Section.astro";
+import "@viewingstudio/ui/css/tokens";
+---
+
+<Section class="playground not-content">
+  <slot />
+</Section>
+
+<style>
+  .playground {
+    * {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+    /* Copied from reset.css */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    * {
+      margin: 0;
+    }
+
+    :not(:defined) {
+      visibility: hidden;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        interpolate-size: allow-keywords;
+      }
+    }
+
+    img {
+      box-sizing: content-box;
+    }
+
+    img,
+    picture,
+    video,
+    canvas,
+    svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input,
+    button,
+    textarea,
+    select {
+      font: inherit;
+    }
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    p {
+      overflow-wrap: break-word;
+    }
+
+    body {
+      font-family: var(--font-family-body);
+      font-size: var(--font-size);
+      line-height: var(--line-height);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: geometricPrecision;
+      tab-size: 2;
+      hanging-punctuation: first allow-end last;
+      word-break: break-word;
+    }
+
+    svg {
+      flex-shrink: 0;
+    }
+    a {
+      color: currentColor;
+      text-decoration: none;
+
+      &:not([href]) {
+        cursor: not-allowed;
+      }
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgb(var(--color-foreground-secondary));
+    }
+
+    ::selection {
+      color: var(--color-bg);
+      background-color: var(--color-foreground);
+    }
+
+    :where(ol, ul) {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    :where(address) {
+      font-style: normal;
+    }
+
+    :where(pre) {
+      font-family: monospace, monospace;
+      font-size: 1em;
+      overflow: auto;
+    }
+
+    :where(svg:not([fill])) {
+      fill: currentColor;
+    }
+
+    :where(textarea) {
+      margin: 0; /* 1 */
+      resize: vertical; /* 3 */
+    }
+
+    :where([type="search" i]) {
+      appearance: textfield; /* 1 */
+      outline-offset: -2px; /* 2 */
+    }
+
+    ::-webkit-inner-spin-button,
+    ::-webkit-outer-spin-button {
+      height: auto;
+    }
+
+    :where([aria-busy="true" i]) {
+      cursor: progress;
+    }
+
+    :where([aria-disabled="true" i], [disabled]) {
+      cursor: not-allowed;
+    }
+
+    :where([aria-hidden="false" i][hidden]) {
+      display: initial;
+    }
+
+    :where([aria-hidden="false" i][hidden]:not(:focus)) {
+      clip: rect(0, 0, 0, 0);
+      position: absolute;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      ::before,
+      ::after {
+        animation-delay: -1ms !important; /* 1 */
+        animation-duration: 1ms !important; /* 1 */
+        animation-iteration-count: 1 !important; /* 1 */
+        background-attachment: initial !important; /* 2 */
+        scroll-behavior: auto !important; /* 3 */
+        transition-delay: 0s !important; /* 4 */
+        transition-duration: 0s !important; /* 4 */
+      }
+    }
+
+    /* Typography Baseline Rules */
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      text-wrap: balance;
+      overflow-wrap: break-word;
+      font-family: var(--font-family-heading, var(--font-family));
+      line-height: var(--line-height-snug);
+    }
+
+    h1 {
+      max-width: var(--measure-heading-1);
+    }
+
+    h2 {
+      max-width: var(--measure-heading-2);
+    }
+
+    h3 {
+      max-width: var(--measure-heading-3);
+    }
+
+    h4 {
+      max-width: var(--measure-heading-4);
+    }
+
+    h5 {
+      max-width: var(--measure-heading-5);
+    }
+
+    h6 {
+      max-width: var(--measure-heading-6);
+    }
+
+    p {
+      text-wrap: pretty;
+    }
+
+    padding: var(--space-lg);
+  }
+</style>

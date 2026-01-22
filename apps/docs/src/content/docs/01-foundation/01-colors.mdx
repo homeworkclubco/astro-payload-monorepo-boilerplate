@@ -1,0 +1,97 @@
+---
+title: Colors
+description: Our semantic color system based on the OKLCH perceptual color space.
+sidebar:
+  order: 1
+---
+
+import { Playground } from "@viewingstudio/ui";
+
+We use a two-layer color system:
+
+1.  **Primitives:** The raw palette (Neutral 50-950). We use OKLCH for perceptually uniform lightness steps.
+2.  **Semantics:** The logical application (Background, Border, Accent). **Always use semantic tokens in your components.**
+
+## Semantic Tokens
+
+These tokens automatically adapt when the user switches between Light and Dark mode.
+
+### Backgrounds
+
+| Token            | Preview                                                                                                                | Description                             |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------- | :-------------------------------------- |
+| `--color-bg`     | <div style="background: var(--color-bg); width: 100%; height: 2rem; border: 1px solid var(--color-border);"></div>     | Default page background.                |
+| `--color-bg-alt` | <div style="background: var(--color-bg-alt); width: 100%; height: 2rem; border: 1px solid var(--color-border);"></div> | Secondary background (sidebars, cards). |
+
+### Foreground (Text)
+
+| Token                          | Preview                                                                              | Description                          |
+| :----------------------------- | :----------------------------------------------------------------------------------- | :----------------------------------- |
+| `--color-foreground`           | <span style="color: var(--color-foreground); font-weight: bold;">Aa</span>           | Primary headings and body text.      |
+| `--color-foreground-secondary` | <span style="color: var(--color-foreground-secondary); font-weight: bold;">Aa</span> | Subtitles, captions, and muted text. |
+
+### Borders
+
+| Token                   | Preview                                                                         | Description                        |
+| :---------------------- | :------------------------------------------------------------------------------ | :--------------------------------- |
+| `--color-border`        | <div style="border: 1px solid var(--color-border); height: 1rem;"></div>        | Subtle dividers and card borders.  |
+| `--color-border-strong` | <div style="border: 2px solid var(--color-border-strong); height: 1rem;"></div> | High-contrast boundaries (inputs). |
+
+### Accents (Brand)
+
+[Image of color wheel showing complementary colors]
+
+| Token               | Preview                                                                                                     | Description                            |
+| :------------------ | :---------------------------------------------------------------------------------------------------------- | :------------------------------------- |
+| `--color-accent`    | <div style="background: var(--color-accent); width: 2rem; height: 2rem;"></div>                             | Primary Actions (Buttons, Links).      |
+| `--color-on-accent` | <span style="background: var(--color-accent); color: var(--color-on-accent); padding: 0.25rem;">Text</span> | Text placed _on top_ of accent colors. |
+
+---
+
+## Primitive Palette (Neutrals)
+
+These are the raw ingredients defined in `tokens.css`. Only use these directly if you are creating a new semantic alias.
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 0.5rem; margin-top: 1rem;">
+  {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((step) => (
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+      <div
+        style={`background: var(--color-neutral-${step}); height: 4rem; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.1);`}
+      ></div>
+      <code style="font-size: 0.75rem; text-align: center;">{step}</code>
+    </div>
+  ))}
+</div>
+
+## Usage Example
+
+```css
+.card {
+  /* ✅ Good: Adapts to Dark Mode */
+  background: var(--color-bg-alt);
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+}
+
+.card-bad {
+  /* ❌ Bad: Will be blindingly bright in Dark Mode */
+  background: var(--color-neutral-100);
+  color: black;
+}
+```
+
+## Dark Mode Support
+
+The system handles dark mode via the `data-color-scheme="dark"` attribute on the `<html>` or `<body>` tag.
+
+Semantically, the mappings invert logic:
+
+- Light Mode: `--color-bg` maps to Neutral-50 (White-ish).
+- Dark Mode: `--color-bg` maps to Black (Dark).
+
+```astro
+// Force dark mode on a specific section
+<section data-color-scheme="dark">
+  <Card>I am dark even on light mode!</Card>
+</section>
+```

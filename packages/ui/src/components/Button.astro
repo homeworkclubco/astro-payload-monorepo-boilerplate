@@ -1,0 +1,208 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"a">, HTMLAttributes<"button">, HTMLAttributes<"span"> {
+  variant?: "primary" | "secondary" | "ghost" | "text";
+  size?: "sm" | "md" | "lg";
+  iconOnly?: boolean;
+  fullWidth?: boolean | "mobile-only";
+  as?: "a" | "button" | "span";
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  iconOnly = false,
+  fullWidth = false,
+  as,
+  href,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const Tag = as || (href ? "a" : "button");
+
+const classes = ["btn", `size-${size}`, variant, className];
+
+if (iconOnly) classes.push("icon-only");
+if (fullWidth === true) classes.push("block-all");
+if (fullWidth === "mobile-only") classes.push("block-mobile");
+---
+
+<Tag href={href} class:list={classes} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  /* -------------------------------------------
+    1. BASE CONFIGURATION (CSS Custom Properties)
+    -------------------------------------------
+  */
+  .btn {
+    /* Local scoped variables (Defaults) */
+    --button-bg: transparent;
+    --button-border: transparent;
+    --button-label: inherit;
+    --button-radius: var(--control-radius);
+    --button-padding-inline: var(--control-padding-inline-md);
+    --button-padding-block: var(--control-padding-block-md);
+    --button-font-size: var(--control-font-size-md);
+    --button-gap: var(--control-gap);
+
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    gap: var(--button-gap, 0.5em); /* Spacing between icon and text */
+    touch-action: manipulation;
+
+    height: var(--button-height);
+    padding: var(--button-padding-block) var(--button-padding-inline);
+    border-radius: var(--button-radius);
+    border: 1px solid var(--button-border);
+
+    font-size: var(--button-font-size);
+    font-weight: 600;
+    text-decoration: none;
+    line-height: 1;
+    white-space: nowrap;
+
+    background-color: var(--button-bg);
+    color: var(--button-label);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    /* Focus States */
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, blue);
+      outline-offset: 2px;
+      isolation: isolate;
+    }
+
+    /* Active Scale (Tactile feel) */
+    &:active {
+      transform: translateY(1px);
+    }
+
+    /* Disabled State */
+    &:disabled,
+    &[aria-disabled="true"] {
+      opacity: 0.5;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+  }
+
+  /* -------------------------------------------
+    2. VARIANTS (Re-assigning Variables)
+    -------------------------------------------
+  */
+
+  /* PRIMARY: Uses global brand color */
+  .btn.primary {
+    --button-bg: var(--button-primary-bg);
+    --button-label: var(--button-primary-label);
+    --button-border: var(--button-primary-border);
+
+    &:hover {
+      --button-bg: var(--button-primary-hover-bg);
+      --button-label: var(--button-primary-hover-label);
+      --button-border: var(--button-primary-hover-border);
+
+      /* filter: brightness(90%); */
+    }
+  }
+
+  /* SECONDARY: Outline style */
+  .btn.secondary {
+    --button-bg: var(--button-secondary-bg);
+    --button-label: var(--button-secondary-label);
+    --button-border: var(--button-secondary-border);
+
+    &:hover {
+      --button-bg: var(--button-secondary-hover-bg);
+      --button-label: var(--button-secondary-hover-label);
+      --button-border: var(--button-secondary-hover-border);
+    }
+  }
+
+  /* GHOST: Subtle background on hover */
+  .btn.ghost {
+    --button-bg: var(--button-ghost-bg);
+    --button-label: var(--button-ghost-label);
+    --button-border: var(--button-ghost-border);
+
+    &:hover {
+      --button-bg: var(--button-ghost-hover-bg);
+      --button-label: var(--button-ghost-hover-label);
+      --button-border: var(--button-ghost-hover-border);
+    }
+  }
+
+  /* TEXT: Like a link but button behavior */
+  .btn.text {
+    --button-bg: var(--button-text-bg);
+    --button-label: var(--button-text-label);
+    --button-border: var(--button-text-border);
+    --button-padding-inline: 0;
+    --button-padding-block: 0;
+
+    &:hover {
+      text-decoration: underline;
+      --button-bg: var(--button-text-hover-bg);
+      --button-label: var(--button-text-hover-label);
+      --button-border: var(--button-text-hover-border);
+    }
+  }
+
+  /* -------------------------------------------
+    3. SIZES
+    -------------------------------------------
+  */
+  .size-sm {
+    --button-font-size: var(--control-font-size-sm);
+    --button-padding-inline: var(--control-padding-inline-sm);
+    --button-padding-block: var(--control-padding-block-sm);
+    --button-height: var(--control-height-sm);
+  }
+
+  .size-md {
+    --button-font-size: var(--control-font-size-md);
+    --button-padding-inline: var(--control-padding-inline-md);
+    --button-padding-block: var(--control-padding-block-md);
+    --button-height: var(--control-height-md);
+  }
+
+  .size-lg {
+    --button-font-size: var(--control-font-size-lg);
+    --button-padding-inline: var(--control-padding-inline-lg);
+    --button-padding-block: var(--control-padding-block-lg);
+    --button-height: var(--control-height-lg);
+  }
+
+  /* -------------------------------------------
+    4. MODIFIERS
+    -------------------------------------------
+  */
+
+  /* Icon Only: Forces square aspect ratio */
+  .btn.icon-only {
+    padding: var(--button-padding-block); /* Equal padding */
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Full Width: Always */
+  .btn.block-all {
+    display: flex;
+    width: 100%;
+  }
+
+  /* Full Width: Mobile Only */
+  .btn.block-mobile {
+    @media (--sm-down) {
+      display: flex;
+      width: 100%;
+    }
+  }
+</style>

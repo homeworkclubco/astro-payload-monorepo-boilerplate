@@ -1,0 +1,19 @@
+{
+  "name": "@viewingstudio/ui",
+  "version": "0.0.0",
+  "exports": {
+    ".": "./index.ts",
+    "./css/tokens": "./src/css/tokens.css",
+    "./css/reset": "./src/css/reset.css",
+    "./css/breakpoints": "./src/css/breakpoints.css",
+    "./css/spacing": "./src/css/spacing.css",
+    "./css/typography": "./src/css/typography.css",
+    "./css/prose": "./src/css/prose.css",
+    "./css/easing": "./src/css/easing.css",
+    "./css/utilities": "./src/css/utilities.css",
+    "./css/color": "./src/css/color.css"
+  },
+  "peerDependencies": {
+    "astro": "^5.16.11"
+  }
+}

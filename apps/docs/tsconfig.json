@@ -8,7 +8,6 @@
       "@/*": ["src/*"],
       "@viewingstudio/ui": ["../../packages/ui/index.ts"],
       "@viewingstudio/ui/*": ["../../packages/ui/*"]
-    },
-    "types": ["./worker-configuration.d.ts", "node"]
+    }
   }
 }
