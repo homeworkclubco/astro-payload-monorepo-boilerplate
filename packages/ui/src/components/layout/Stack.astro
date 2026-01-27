@@ -1,0 +1,74 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { SpaceToken } from "../../types";
+
+interface Props extends HTMLAttributes<"div"> {
+  space?: SpaceToken;
+  splitAfter?: number;
+  recursive?: boolean;
+  align?: "start" | "center" | "end" | "stretch";
+  text?: "left" | "center" | "right";
+}
+
+const {
+  space = "md",
+  splitAfter,
+  recursive = false,
+  align = "stretch",
+  text,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = ["stack", recursive ? "recursive" : "", className];
+---
+
+<div class:list={classes} data-split-index={splitAfter} {...rest}>
+  <slot />
+</div>
+
+<style
+  define:vars={{
+    "stack-space": `var(--space-${space})`,
+    "stack-align": align ?? "flex-start",
+    "stack-text-align": text ?? "left",
+  }}
+>
+  .stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: var(--stack-align, flex-start);
+    text-align: var(--stack-text-align, left);
+  }
+
+  /* * THE "OWL" SELECTOR
+   * Selects every element that follows another element.
+   * This allows specific children to override this margin 
+   * via inline styles or utility classes.
+   */
+  .stack > :global(* + *) {
+    margin-block-start: var(--stack-space);
+  }
+
+  /* Recursive version (careful with this) */
+  .stack.recursive :global(* + *) {
+    margin-block-start: var(--stack-space);
+  }
+
+  /* * SPLIT LOGIC
+   * Works perfectly with Flexbox + Margins 
+   */
+  .stack[data-split-index="1"] > :global(:nth-child(1)) {
+    margin-block-end: auto;
+  }
+  .stack[data-split-index="2"] > :global(:nth-child(2)) {
+    margin-block-end: auto;
+  }
+  .stack[data-split-index="3"] > :global(:nth-child(3)) {
+    margin-block-end: auto;
+  }
+  .stack[data-split-index="4"] > :global(:nth-child(4)) {
+    margin-block-end: auto;
+  }
+</style>

@@ -1,0 +1,74 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"h1"> {
+  /** The semantic HTML tag (SEO/Accessibility) */
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "span";
+
+  /** The visual style (Design System Token) */
+  size?: 0 | 1 | 2 | 3 | 4 | 5;
+
+  /** Visual emphasis */
+  variant?: "primary" | "secondary";
+}
+
+const {
+  as: Tag = "h2", // Default to h2 as it's the most common content block
+  size = 4,
+  variant = "primary",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = ["heading", `size-${size}`, `variant-${variant}`, className];
+---
+
+<Tag class:list={classes} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .heading {
+    /* Base Typography Reset */
+    font-family: var(--font-family-heading);
+    line-height: var(--line-height-snug);
+    font-weight: 300;
+
+    /* Default Colors */
+    color: var(--color-foreground);
+  }
+
+  /* ---------------------------------------------------------
+     VISUAL SIZES (Mapped to your Tokens)
+     Notice we use fluid typography or simple steps here
+     --------------------------------------------------------- */
+
+  .size-0 {
+    font-size: var(--font-size-0);
+  }
+  .size-1 {
+    font-size: var(--font-size-1);
+  }
+  .size-2 {
+    font-size: var(--font-size-2);
+  }
+  .size-3 {
+    font-size: var(--font-size-3);
+  }
+  .size-4 {
+    font-size: var(--font-size-4);
+    /* letter-spacing: -0.01em; */
+  }
+  .size-5 {
+    font-size: var(--font-size-5);
+  }
+
+  /* ---------------------------------------------------------
+     VARIANTS
+     --------------------------------------------------------- */
+
+  .variant-secondary {
+    color: var(--color-foreground-secondary);
+    /* font-weight: 500; */
+  }
+</style>

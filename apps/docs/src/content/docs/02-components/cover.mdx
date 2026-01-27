@@ -1,0 +1,130 @@
+---
+title: Cover
+description: A layout primitive for creating full-viewport sections with vertically centered content.
+sidebar:
+  order: 6
+---
+
+import { Cover, Container, Button, Playground } from "@viewingstudio/ui";
+
+The `Cover` component creates full-viewport sections with vertically centered content. It uses flexbox with auto margins to achieve perfect vertical centering and supports named slots for header and footer content.
+
+It is commonly used for:
+
+- Hero sections
+- Landing page headers
+- Full-screen call-to-action sections
+- Splash screens and introductions
+
+## Basic Usage
+
+By default, Cover creates a full-viewport height section with centered content.
+
+<Playground>
+  <Cover>
+    <Container>
+      <div style="text-align: center;">
+        <h1>Hero Title</h1>
+        <p>This content is perfectly centered in the viewport.</p>
+        <Button variant="primary">Get Started</Button>
+      </div>
+    </Container>
+  </Cover>
+</Playground>
+
+## Custom Height
+
+Use the `minHeight` prop to set a custom minimum height.
+
+<Playground>
+  <Cover minHeight="50vh">
+    <Container>
+      <div style="text-align: center; background: var(--color-neutral-100); padding: 2rem; border-radius: 0.5rem;">
+        <h3>Half Height Section</h3>
+        <p>This section takes 50% of the viewport height.</p>
+      </div>
+    </Container>
+  </Cover>
+</Playground>
+
+## With Header and Footer
+
+Use named slots to add content at the top and bottom of the cover.
+
+<Playground>
+  <Cover>
+    <div slot="top" style="text-align: center;">
+      <small>Navigation Header</small>
+    </div>
+
+    <Container>
+      <div style="text-align: center;">
+        <h2>Main Content</h2>
+        <p>This stays centered between header and footer.</p>
+      </div>
+    </Container>
+
+    <div slot="bottom" style="text-align: center;">
+      <small>Footer Content</small>
+    </div>
+  </Cover>
+</Playground>
+
+## Spacing Control
+
+Use the `space` prop to control the spacing between the top/center/bottom sections.
+
+<Playground>
+  <Cover space="xl">
+    <div slot="top">
+      <Container>
+        <small>Spaced Header</small>
+      </Container>
+    </div>
+
+    <Container>
+      <div style="text-align: center; background: var(--color-primary-100); padding: 2rem; border-radius: 0.5rem;">
+        <h3>Extra Spacing</h3>
+        <p>More space between sections with space="xl".</p>
+      </div>
+    </Container>
+
+    <div slot="bottom">
+      <Container>
+        <small>Spaced Footer</small>
+      </Container>
+    </div>
+  </Cover>
+</Playground>
+
+## Custom HTML Element
+
+Use the `as` prop to render a semantic element like `header` or `section`.
+
+<Playground>
+  <Cover as="header" minHeight="80vh">
+    <Container>
+      <div style="text-align: center;">
+        <h1>&lt;header&gt; Element</h1>
+        <p>Rendered as a semantic header element.</p>
+      </div>
+    </Container>
+  </Cover>
+</Playground>
+
+## Component API
+
+| Prop        | Type         | Default   | Description                               |
+| ----------- | ------------ | --------- | ----------------------------------------- |
+| `minHeight` | `string`     | `'100vh'` | Minimum height of the cover section.      |
+| `space`     | `SpaceToken` | `'lg'`    | Space between top/center/bottom sections. |
+| `as`        | `string`     | `'div'`   | The HTML tag to render.                   |
+| `class`     | `string`     | —         | Additional CSS classes to apply.          |
+
+## Named Slots
+
+| Slot      | Description                                    |
+| --------- | ---------------------------------------------- |
+| (default) | The centered content area.                     |
+| `top`     | Content positioned at the top of the cover.    |
+| `bottom`  | Content positioned at the bottom of the cover. |

@@ -1,7 +1,7 @@
 :root {
   /* Default to system ui stack */
   --font-family-body:
-    "inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   --font-family-heading: var(--font-family-body);
   --font-family-alt: var(--font-family-body);
@@ -23,7 +23,7 @@
   --font-weight-black: 900;
 
   --measure: 65ch;
-  --measure-heading-1: 30ch;
+  --measure-heading-1: var(--measure-xs);
   --measure-heading-2: var(--measure-sm);
   --measure-heading-3: var(--measure-sm);
   --measure-heading-4: var(--measure-sm);
@@ -33,7 +33,7 @@
   --measure-lg: 75ch;
   --measure-md: 50ch;
   --measure-sm: 45ch;
-  --measure-xs: 20ch;
+  --measure-xs: 30ch;
 
   --font-size: var(--font-size-0);
 

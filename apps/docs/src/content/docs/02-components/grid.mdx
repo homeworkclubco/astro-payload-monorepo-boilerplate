@@ -1,0 +1,61 @@
+---
+title: Grid (RAM)
+description: An auto-responsive grid that requires no media queries.
+sidebar:
+  order: 5
+---
+
+import { Grid, Card, Playground } from "@viewingstudio/ui";
+
+The `Grid` component uses the **RAM** pattern (Repeat, Auto, Minmax). You define the _minimum_ width of a card, and the browser calculates how many columns fit in the available space.
+
+## Basic Usage
+
+Resize your browser to see the columns reflow automatically.
+
+<Playground>
+  <Grid minItemWidth="sm" space="md">
+    <div style="background: var(--color-neutral-100); padding: 2rem;">Item 1</div>
+    <div style="background: var(--color-neutral-100); padding: 2rem;">Item 2</div>
+    <div style="background: var(--color-neutral-100); padding: 2rem;">Item 3</div>
+    <div style="background: var(--color-neutral-100); padding: 2rem;">Item 4</div>
+  </Grid>
+</Playground>
+
+## Custom Min-Width
+
+You are not limited to the presets. You can pass **any CSS value** to `minItemWidth`. This is useful for optimizing grids based on content density (e.g., using `ch` units for text cards).
+
+<Playground>
+  <Grid minItemWidth="45ch" space="lg">
+    <div style="border: 1px solid var(--color-border); padding: 1rem;">
+      <h3>Text-Optimized Card</h3>
+      <p>This grid column will never be narrower than 45 characters, ensuring readability.</p>
+    </div>
+    <div style="border: 1px solid var(--color-border); padding: 1rem;">
+      <h3>Text-Optimized Card</h3>
+      <p>This grid column will never be narrower than 45 characters, ensuring readability.</p>
+    </div>
+  </Grid>
+</Playground>
+
+## Presets
+
+| Preset | Value   | Use Case                                 |
+| :----- | :------ | :--------------------------------------- |
+| `xs`   | `200px` | Small thumbnails, avatars, simple stats. |
+| `sm`   | `250px` | Standard cards, portrait photos.         |
+| `md`   | `300px` | Feature cards, blog post previews.       |
+| `lg`   | `400px` | Large marketing features, heavy content. |
+
+## Stretch Behavior
+
+By default, Grid items stretch to fill the full height of the row (making all cards equal height). To disable this, use `noStretch`.
+
+<Playground>
+  <Grid noStretch space="md">
+    <div style="background: red; height: 100px;">Short</div>
+    <div style="background: blue; height: 200px;">Tall</div>
+    <div style="background: green; height: 100px;">I will NOT stretch to match the blue item.</div>
+  </Grid>
+</Playground>

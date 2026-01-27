@@ -1,0 +1,109 @@
+---
+title: Container
+description: A layout primitive for constraining content width and managing full-bleed grid layouts.
+sidebar:
+  order: 5
+---
+
+import { Container, Button, Playground } from "@viewingstudio/ui";
+
+The `Container` component manages content width and centering. It provides predictable max-widths for different content types and supports full-bleed grid layouts.
+
+It is commonly used for:
+
+- Page layout wrappers
+- Content sections with optimal reading widths
+- Full-bleed grid layouts with gutters
+- Responsive design boundaries
+
+## Basic Usage
+
+By default, Container centers content with a max-width of ~110rem and horizontal padding.
+
+<Playground>
+  <Container>
+    <div style="background: var(--color-neutral-100); padding: 2rem; border-radius: 0.5rem;">
+      <h3>Centered Content</h3>
+      <p>This content is centered with a maximum width and horizontal padding.</p>
+    </div>
+  </Container>
+</Playground>
+
+## Size Variants
+
+Use the `size` prop to control the max-width for different content types.
+
+<Playground>
+  <div style="display: grid; gap: 1rem;">
+    <Container size="narrow">
+      <div style="background: var(--color-primary-100); padding: 1rem; border-radius: 0.25rem;">
+        <strong>Narrow (~45ch)</strong> - Optimal for short text content
+      </div>
+    </Container>
+
+    <Container size="prose">
+      <div style="background: var(--color-secondary-100); padding: 1rem; border-radius: 0.25rem;">
+        <strong>Prose (~65ch)</strong> - Standard reading width for articles
+      </div>
+    </Container>
+
+    <Container size="wide">
+      <div style="background: var(--color-accent-100); padding: 1rem; border-radius: 0.25rem;">
+        <strong>Wide (~1280px)</strong> - For wider content like dashboards
+      </div>
+    </Container>
+  </div>
+</Playground>
+
+## Full Bleed Grid Layout
+
+The `bleed` prop creates a full-bleed grid layout with gutters. Useful for card grids and image galleries.
+
+<Playground>
+  <Container bleed={12}>
+    <div style="background: var(--color-neutral-200); padding: 2rem; grid-column: span 12;">
+      <h4>Full Width Header</h4>
+    </div>
+    <div style="background: var(--color-primary-100); padding: 1rem; grid-column: span 4; border-radius: 0.25rem;">
+      Card 1
+    </div>
+    <div style="background: var(--color-primary-100); padding: 1rem; grid-column: span 4; border-radius: 0.25rem;">
+      Card 2
+    </div>
+    <div style="background: var(--color-primary-100); padding: 1rem; grid-column: span 4; border-radius: 0.25rem;">
+      Card 3
+    </div>
+  </Container>
+</Playground>
+
+## Custom HTML Element
+
+Use the `as` prop to render a different HTML element, like `main` or `section`.
+
+<Playground>
+  <Container as="main">
+    <div style="background: var(--color-neutral-100); padding: 2rem; border-radius: 0.5rem;">
+      <h3>Main Content Area</h3>
+      <p>Rendered as a semantic &lt;main&gt; element.</p>
+    </div>
+  </Container>
+</Playground>
+
+## Responsive Overrides
+
+Because this component uses utility classes under the hood, you can override props responsively using breakpoint modifiers.
+
+```astro
+<Container size="narrow" class="lg:container--prose">
+  <p>Narrow on mobile, prose width on large screens.</p>
+</Container>
+```
+
+## Component API
+
+| Prop    | Type                                                   | Default     | Description                                                  |
+| ------- | ------------------------------------------------------ | ----------- | ------------------------------------------------------------ |
+| `size`  | `'default' \| 'narrow' \| 'prose' \| 'wide' \| 'full'` | `'default'` | Max-width of the container.                                  |
+| `bleed` | `boolean \| 6 \| 12`                                   | `false`     | Activates full-bleed grid layout with optional column count. |
+| `as`    | `string`                                               | `'div'`     | The HTML tag to render.                                      |
+| `class` | `string`                                               | —           | Additional CSS classes to apply.                             |

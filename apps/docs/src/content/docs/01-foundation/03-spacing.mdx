@@ -1,4 +1,441 @@
 ---
 title: Spacing
-description: ""
+description: A comprehensive spacing system with a modular scale for consistent margins and padding.
+sidebar:
+  order: 3
 ---
+
+The spacing system provides a consistent set of CSS custom properties for margins, padding, gaps, and other spacing needs. It uses a modular scale to ensure visual harmony across all components and layouts.
+
+## Spacing Scale
+
+The spacing system uses a 13-step modular scale, from micro spacing to massive spacing. Each step provides both a base value and an optional larger value for flexibility.
+
+| Token         | Base Value | Large Value | Use Case                        |
+| ------------- | ---------- | ----------- | ------------------------------- |
+| `--space-4xs` | 2px        | 4px         | Micro spacing, hairline borders |
+| `--space-3xs` | 4px        | 6px         | Tiny gaps, tight spacing        |
+| `--space-2xs` | 6px        | 8px         | Very small spacing              |
+| `--space-xs`  | 8px        | 12px        | Small gaps, compact layouts     |
+| `--space-sm`  | 12px       | 16px        | Standard small spacing          |
+| `--space-md`  | 16px       | 24px        | Default medium spacing          |
+| `--space-lg`  | 24px       | 32px        | Standard large spacing          |
+| `--space-xl`  | 32px       | 48px        | Extra large spacing             |
+| `--space-2xl` | 48px       | 64px        | Very large spacing              |
+| `--space-3xl` | 64px       | 96px        | Huge spacing                    |
+| `--space-4xl` | 96px       | 128px       | Massive spacing                 |
+| `--space-5xl` | 128px      | 192px       | Extra massive spacing           |
+| `--space-6xl` | 192px      | 256px       | Giant spacing                   |
+
+## Usage Patterns
+
+### Component Spacing
+
+```css
+/* Card component */
+.card {
+  padding: var(--space-lg);
+  margin-bottom: var(--space-md);
+}
+
+.card-header {
+  margin-bottom: var(--space-sm);
+}
+
+/* Button component */
+.button {
+  padding: var(--space-sm) var(--space-md);
+}
+
+.button-large {
+  padding: var(--space-md) var(--space-lg);
+}
+
+/* Form component */
+.form-group {
+  margin-bottom: var(--space-md);
+}
+
+.form-input {
+  padding: var(--space-sm);
+}
+```
+
+### Layout Spacing
+
+```css
+/* Section spacing */
+.section {
+  padding: var(--space-2xl) 0;
+}
+
+/* Container spacing */
+.container {
+  padding: 0 var(--space-lg);
+}
+
+/* Grid spacing */
+.grid {
+  gap: var(--space-md);
+}
+```
+
+## Utility Classes
+
+### Margin Utilities
+
+```css
+/* Margin all sides */
+.m-4xs {
+  margin: var(--space-4xs);
+}
+.m-3xs {
+  margin: var(--space-3xs);
+}
+.m-2xs {
+  margin: var(--space-2xs);
+}
+.m-xs {
+  margin: var(--space-xs);
+}
+.m-sm {
+  margin: var(--space-sm);
+}
+.m-md {
+  margin: var(--space-md);
+}
+.m-lg {
+  margin: var(--space-lg);
+}
+.m-xl {
+  margin: var(--space-xl);
+}
+.m-2xl {
+  margin: var(--space-2xl);
+}
+.m-3xl {
+  margin: var(--space-3xl);
+}
+
+/* Margin top */
+.mt-4xs {
+  margin-top: var(--space-4xs);
+}
+.mt-3xs {
+  margin-top: var(--space-3xs);
+}
+.mt-2xs {
+  margin-top: var(--space-2xs);
+}
+.mt-xs {
+  margin-top: var(--space-xs);
+}
+.mt-sm {
+  margin-top: var(--space-sm);
+}
+.mt-md {
+  margin-top: var(--space-md);
+}
+.mt-lg {
+  margin-top: var(--space-lg);
+}
+.mt-xl {
+  margin-top: var(--space-xl);
+}
+
+/* Margin bottom */
+.mb-4xs {
+  margin-bottom: var(--space-4xs);
+}
+.mb-3xs {
+  margin-bottom: var(--space-3xs);
+}
+.mb-2xs {
+  margin-bottom: var(--space-2xs);
+}
+.mb-xs {
+  margin-bottom: var(--space-xs);
+}
+.mb-sm {
+  margin-bottom: var(--space-sm);
+}
+.mb-md {
+  margin-bottom: var(--space-md);
+}
+.mb-lg {
+  margin-bottom: var(--space-lg);
+}
+.mb-xl {
+  margin-bottom: var(--space-xl);
+}
+```
+
+### Padding Utilities
+
+```css
+/* Padding all sides */
+.p-4xs {
+  padding: var(--space-4xs);
+}
+.p-3xs {
+  padding: var(--space-3xs);
+}
+.p-2xs {
+  padding: var(--space-2xs);
+}
+.p-xs {
+  padding: var(--space-xs);
+}
+.p-sm {
+  padding: var(--space-sm);
+}
+.p-md {
+  padding: var(--space-md);
+}
+.p-lg {
+  padding: var(--space-lg);
+}
+.p-xl {
+  padding: var(--space-xl);
+}
+.p-2xl {
+  padding: var(--space-2xl);
+}
+
+/* Padding horizontal */
+.px-4xs {
+  padding-left: var(--space-4xs);
+  padding-right: var(--space-4xs);
+}
+.px-3xs {
+  padding-left: var(--space-3xs);
+  padding-right: var(--space-3xs);
+}
+.px-2xs {
+  padding-left: var(--space-2xs);
+  padding-right: var(--space-2xs);
+}
+.px-xs {
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+.px-sm {
+  padding-left: var(--space-sm);
+  padding-right: var(--space-sm);
+}
+.px-md {
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+.px-lg {
+  padding-left: var(--space-lg);
+  padding-right: var(--space-lg);
+}
+
+/* Padding vertical */
+.py-4xs {
+  padding-top: var(--space-4xs);
+  padding-bottom: var(--space-4xs);
+}
+.py-3xs {
+  padding-top: var(--space-3xs);
+  padding-bottom: var(--space-3xs);
+}
+.py-2xs {
+  padding-top: var(--space-2xs);
+  padding-bottom: var(--space-2xs);
+}
+.py-xs {
+  padding-top: var(--space-xs);
+  padding-bottom: var(--space-xs);
+}
+.py-sm {
+  padding-top: var(--space-sm);
+  padding-bottom: var(--space-sm);
+}
+.py-md {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+.py-lg {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+```
+
+### Gap Utilities
+
+```css
+/* Gap for flexbox and grid */
+.gap-4xs {
+  gap: var(--space-4xs);
+}
+.gap-3xs {
+  gap: var(--space-3xs);
+}
+.gap-2xs {
+  gap: var(--space-2xs);
+}
+.gap-xs {
+  gap: var(--space-xs);
+}
+.gap-sm {
+  gap: var(--space-sm);
+}
+.gap-md {
+  gap: var(--space-md);
+}
+.gap-lg {
+  gap: var(--space-lg);
+}
+.gap-xl {
+  gap: var(--space-xl);
+}
+.gap-2xl {
+  gap: var(--space-2xl);
+}
+
+/* Column gap */
+.gap-x-4xs {
+  column-gap: var(--space-4xs);
+}
+.gap-x-3xs {
+  column-gap: var(--space-3xs);
+}
+.gap-x-2xs {
+  column-gap: var(--space-2xs);
+}
+.gap-x-xs {
+  column-gap: var(--space-xs);
+}
+.gap-x-sm {
+  column-gap: var(--space-sm);
+}
+.gap-x-md {
+  column-gap: var(--space-md);
+}
+.gap-x-lg {
+  column-gap: var(--space-lg);
+}
+
+/* Row gap */
+.gap-y-4xs {
+  row-gap: var(--space-4xs);
+}
+.gap-y-3xs {
+  row-gap: var(--space-3xs);
+}
+.gap-y-2xs {
+  row-gap: var(--space-2xs);
+}
+.gap-y-xs {
+  row-gap: var(--space-xs);
+}
+.gap-y-sm {
+  row-gap: var(--space-sm);
+}
+.gap-y-md {
+  row-gap: var(--space-md);
+}
+.gap-y-lg {
+  row-gap: var(--space-lg);
+}
+```
+
+## Responsive Spacing
+
+```css
+/* Responsive spacing patterns */
+.responsive-padding {
+  padding: var(--space-sm);
+}
+
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding: var(--space-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-padding {
+    padding: var(--space-lg);
+  }
+}
+
+/* Responsive margins */
+.responsive-margin {
+  margin: var(--space-xs) 0;
+}
+
+@media (min-width: 768px) {
+  .responsive-margin {
+    margin: var(--space-sm) 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-margin {
+    margin: var(--space-md) 0;
+  }
+}
+```
+
+## Best Practices
+
+### Spacing Hierarchy
+
+- **Micro spacing (4xs-2xs)**: Use for borders, hairlines, and very tight interfaces
+- **Small spacing (xs-sm)**: Use for related elements within components
+- **Medium spacing (md-lg)**: Use for component padding and standard gaps
+- **Large spacing (xl-2xl)**: Use for section spacing and major layout divisions
+- **Massive spacing (3xl-6xl)**: Use for page-level spacing and hero sections
+
+### Consistency Rules
+
+- **Use the scale**: Always use spacing tokens instead of arbitrary values
+- **Be consistent**: Use the same spacing value for similar elements throughout the design
+- **Consider context**: Adjust spacing based on content density and user needs
+- **Test responsiveness**: Ensure spacing works well across different screen sizes
+
+### Common Patterns
+
+```css
+/* Component internal spacing */
+.component {
+  padding: var(--space-md);
+  gap: var(--space-sm);
+}
+
+/* Component external spacing */
+.component + .component {
+  margin-top: var(--space-lg);
+}
+
+/* Section spacing */
+.section {
+  padding: var(--space-xl) 0;
+}
+
+.section + .section {
+  margin-top: var(--space-2xl);
+}
+```
+
+## Integration
+
+The spacing tokens are automatically available in all components that import the UI package:
+
+```astro
+---
+// Component using spacing tokens
+---
+<style>
+  .my-component {
+    padding: var(--space-md);
+    margin-bottom: var(--space-lg);
+    gap: var(--space-sm);
+  }
+</style>
+```
+
+Use spacing tokens consistently to maintain visual harmony and ensure your design system remains scalable and maintainable.

@@ -1,0 +1,167 @@
+---
+title: Stack
+description: A layout primitive for stacking elements vertically with consistent spacing.
+sidebar:
+  order: 8
+---
+
+import { Stack, Button, Container, Playground } from "@viewingstudio/ui";
+
+The `Stack` component manages vertical layout using flexbox. It applies consistent spacing between child elements using the "lobotomized owl" selector and supports advanced features like splitting and recursive spacing.
+
+It is commonly used for:
+
+- Form layouts
+- Card content organization
+- Navigation menus
+- Lists and content sections
+
+## Basic Usage
+
+By default, Stack arranges items vertically with medium spacing.
+
+<Playground>
+  <Stack>
+    <div style="background: var(--color-neutral-100); padding: 1rem; border-radius: 0.25rem;">
+      <h4>Item 1</h4>
+      <p>First stacked item</p>
+    </div>
+    <div style="background: var(--color-neutral-100); padding: 1rem; border-radius: 0.25rem;">
+      <h4>Item 2</h4>
+      <p>Second stacked item</p>
+    </div>
+    <div style="background: var(--color-neutral-100); padding: 1rem; border-radius: 0.25rem;">
+      <h4>Item 3</h4>
+      <p>Third stacked item</p>
+    </div>
+  </Stack>
+</Playground>
+
+## Spacing Control
+
+Use the `space` prop to control the gap between stacked items.
+
+<Playground>
+  <Stack space="lg">
+    <Button variant="secondary">Button 1</Button>
+    <Button variant="secondary">Button 2</Button>
+    <Button variant="secondary">Button 3</Button>
+  </Stack>
+</Playground>
+
+## Horizontal Alignment
+
+Use the `align` prop to control how items align horizontally within the stack.
+
+<Playground>
+  <div style="display: grid; gap: 2rem; grid-template-columns: 1fr 1fr;">
+    <div>
+      <small>align="start"</small>
+      <Stack align="start" space="sm">
+        <div style="background: var(--color-primary-100); padding: 0.5rem 1rem; border-radius: 0.25rem;">
+          Left aligned
+        </div>
+        <div style="background: var(--color-primary-100); padding: 0.5rem 1rem; border-radius: 0.25rem;">
+          Also left
+        </div>
+      </Stack>
+    </div>
+
+    <div>
+      <small>align="center"</small>
+      <Stack align="center" space="sm">
+        <div style="background: var(--color-secondary-100); padding: 0.5rem 1rem; border-radius: 0.25rem;">
+          Center aligned
+        </div>
+        <div style="background: var(--color-secondary-100); padding: 0.5rem 1rem; border-radius: 0.25rem;">
+          Also center
+        </div>
+      </Stack>
+    </div>
+  </div>
+</Playground>
+
+## Text Alignment
+
+Use the `text` prop to control text alignment within the stack.
+
+<Playground>
+  <Stack text="center" space="md">
+    <h3>Centered Text</h3>
+    <p>All text in this stack is center-aligned.</p>
+    <Button variant="primary">Centered Button</Button>
+  </Stack>
+</Playground>
+
+## Split Layout
+
+Use `splitAfter` to push content apart, useful for card layouts with actions at the bottom.
+
+<Playground>
+  <Stack splitAfter={2} space="md">
+    <div style="background: var(--color-neutral-100); padding: 1rem; border-radius: 0.25rem;">
+      <h4>Card Title</h4>
+      <p>This content stays at the top.</p>
+    </div>
+    <div style="background: var(--color-neutral-100); padding: 1rem; border-radius: 0.25rem;">
+      <p>More content here.</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem;">
+      <Button variant="secondary" size="sm">
+        Cancel
+      </Button>
+      <Button variant="primary" size="sm">
+        Save
+      </Button>
+    </div>
+  </Stack>
+</Playground>
+
+## Recursive Spacing
+
+Use `recursive` to apply spacing to all nested elements. Use with caution as it affects deeply nested content.
+
+<Playground>
+  <Stack recursive space="sm">
+    <div>
+      <strong>Parent Item 1</strong>
+      <div style="background: var(--color-neutral-100); padding: 0.5rem; margin-top: 0.5rem;">
+        Nested child with spacing
+      </div>
+    </div>
+    <div>
+      <strong>Parent Item 2</strong>
+      <div style="background: var(--color-neutral-100); padding: 0.5rem; margin-top: 0.5rem;">
+        Another nested child
+      </div>
+    </div>
+  </Stack>
+</Playground>
+
+## Responsive Overrides
+
+Because this component uses CSS variables under the hood, you can override props responsively using utility classes.
+
+```astro
+<Stack space="sm" class="lg:stack-space-lg">
+  <div>Small spacing on mobile</div>
+  <div>Large spacing on desktop</div>
+</Stack>
+```
+
+## Component API
+
+| Prop         | Type                                        | Default     | Description                                    |
+| ------------ | ------------------------------------------- | ----------- | ---------------------------------------------- |
+| `space`      | `SpaceToken`                                | `'md'`      | Gap between stacked items.                     |
+| `align`      | `'start' \| 'center' \| 'end' \| 'stretch'` | `'stretch'` | Horizontal alignment of items.                 |
+| `text`       | `'left' \| 'center' \| 'right'`             | —           | Text alignment within the stack.               |
+| `splitAfter` | `number`                                    | —           | Index after which to apply `margin-end: auto`. |
+| `recursive`  | `boolean`                                   | `false`     | Apply spacing to all nested elements.          |
+| `class`      | `string`                                    | —           | Additional CSS classes to apply.               |
+
+## Data Attributes
+
+| Attribute          | Value    | Description                                                    |
+| ------------------ | -------- | -------------------------------------------------------------- |
+| `data-split-index` | `number` | Set when `splitAfter` prop is provided for split layout logic. |

@@ -5,9 +5,10 @@ sidebar:
   order: 1
 ---
 
-import { Button, Playground } from "@viewingstudio/ui";
+import { Button, Playground, Icon } from "@viewingstudio/ui";
+import { ArrowLeft, ArrowRight, Menu } from "@lucide/astro";
 import { Code } from "@astrojs/starlight/components";
-// import buttonCode from "../../../../../../packages/ui/src/components/Button.astro?raw";
+// import buttonCode from "../../../../../../packages/ui/src/components/actions/Button.astro?raw";
 
 The Button component triggers an action or event, such as submitting a form, opening a dialog, or canceling an action. It supports polymorphism, allowing it to render as a `<button>`, `<a>`, or `<span>`.
 
@@ -55,27 +56,18 @@ Buttons support a single slot for composition. You can place icons before or aft
 
 <Playground>
 <div style="display: flex; gap: 1rem;">
-{/* Example using a simple SVG, usually you'd use your Icon component */}
 <Button variant="secondary">
-<svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-Go Back
+  <Icon  label="Go back">
+    <ArrowLeft />
+  </Icon>
+  Go Back
 </Button>
 
 <Button variant="primary">
   Next Step
-  <svg
-    width="1em"
-    height="1em"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path d="M5 12h14" />
-    <path d="M12 5l7 7-7 7" />
-  </svg>
+  <Icon  label="Next step">
+    <ArrowRight />
+  </Icon>
 </Button>
 </div>
 </Playground>
@@ -89,45 +81,31 @@ It can be used in combination with the different variants and sizes
 <Playground>
   <div>
     <Button variant="secondary" iconOnly aria-label="Menu">
-      <svg
-        width="1.2em"
-        height="1.2em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
+      <Icon>
+        <Menu />
+      </Icon>
     </Button>
   </div>
   <div>
     <Button variant="ghost" size="lg" iconOnly aria-label="Menu">
-      <svg
-        width="1.2em"
-        height="1.2em"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-      >
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
+      <Icon>
+        <Menu />
+      </Icon>
     </Button>
   </div>
 </Playground>
 
 ```tsx
 <Button iconOnly aria-label="Menu">
-  <Icon name="menu" />
+  <Icon>
+    <Menu />
+  </Icon>
 </Button>
 
 <Button variant="ghost" size="lg" iconOnly aria-label="Menu">
-  <Icon name="menu" />
+  <Icon>
+    <Menu />
+  </Icon>
 </Button>
 ```
 

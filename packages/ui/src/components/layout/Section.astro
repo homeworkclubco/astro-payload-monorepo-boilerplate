@@ -2,17 +2,19 @@
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"section">, HTMLAttributes<"div"> {
-  as?: "section" | "div";
+  as?: "section" | "div" | "footer" | "header" | "main";
   colorScheme?: "light" | "dark";
 }
 
-const { as = "section", colorScheme = "light", class: className, ...rest } = Astro.props;
+const { as = "section", colorScheme, class: className, ...rest } = Astro.props;
 
 const Tag = as || "section";
 
 const classes = ["section", colorScheme, className];
 ---
 
-<Tag {...rest} class:list={classes} data-color-scheme={colorScheme}>
+<Tag {...rest} class:list={classes} data-color-scheme={colorScheme ? colorScheme : undefined}>
   <slot />
 </Tag>
+
+<style></style>

@@ -1,0 +1,48 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { SpaceToken } from "../../types";
+
+interface Props extends HTMLAttributes<"div"> {
+  space?: SpaceToken;
+  justify?: "start" | "center" | "end" | "between";
+  align?: "start" | "center" | "end" | "stretch";
+  noWrap?: boolean;
+  as?: string;
+}
+
+const {
+  as: Tag = "div",
+  space = "sm",
+  justify = "start",
+  align = "center",
+  noWrap = false,
+  class: className,
+  style,
+  ...rest
+} = Astro.props;
+
+// Map props to YOUR EXISTING CSS modifier classes
+const classes = [
+  "cluster",
+  `justify-${justify}`, // e.g. .justify-between
+  `align-${align}`, // e.g. .cluster--align-center
+  noWrap && "no-wrap",
+  className,
+];
+
+// Only "space" needs a var because it has infinite possibilities (4xs...3xl)
+const vars = {
+  "--cluster-space": `var(--space-${space})`,
+};
+---
+
+<Tag class:list={classes} style={[vars, style]} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .cluster {
+    display: flex;
+    gap: var(--cluster-space);
+  }
+</style>

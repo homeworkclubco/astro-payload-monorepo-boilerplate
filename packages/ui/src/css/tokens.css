@@ -33,8 +33,8 @@
   --control-radius: var(--radius);
 
   --control-font-size-sm: var(--font-size--1);
-  --control-font-size-md: var(--font-size-0);
-  --control-font-size-lg: var(--font-size-1);
+  --control-font-size-md: var(--font-size--1);
+  --control-font-size-lg: var(--font-size-0);
 
   --control-padding-inline-sm: var(--space-sm);
   --control-padding-inline-md: var(--space-lg);

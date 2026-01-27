@@ -1,0 +1,113 @@
+---
+title: Cluster
+description: A layout primitive for grouping items horizontally.
+sidebar:
+  order: 4
+---
+
+import { Cluster, Button, Playground } from "@viewingstudio/ui";
+
+The `Cluster` component manages horizontal layout. It is the horizontal counterpart to [Stack](/components/stack).
+
+It is commonly used for:
+
+- Button groups
+- Navigation bars
+- Tag lists
+- Form inputs placed next to labels
+
+## Basic Usage
+
+By default, items in a Cluster wrap to the next line if they run out of space.
+
+<Playground>
+  <Cluster space="md">
+    <Button variant="secondary">Cancel</Button>
+    <Button variant="primary">Save Changes</Button>
+  </Cluster>
+</Playground>
+
+## Spacing
+
+Use the `space` prop to control the gap between items. This accepts any token from your spacing scale.
+
+<Playground>
+  <div style="border: 1px dashed var(--color-border); padding: 1rem;">
+    <Cluster space="xs">
+      <div class="badge">Tag 1</div>
+      <div class="badge">Tag 2</div>
+      <div class="badge">Tag 3</div>
+    </Cluster>
+  </div>
+</Playground>
+
+## Horizontal Alignment (`justify`)
+
+Control how items are distributed horizontally using the `justify` prop.
+
+| Value     | Description                                     |
+| :-------- | :---------------------------------------------- |
+| `start`   | Pack items to the left (Default).               |
+| `center`  | Pack items in the middle.                       |
+| `end`     | Pack items to the right.                        |
+| `between` | Distribute items with equal space between them. |
+
+<Playground>
+  <Cluster justify="between" space="md">
+    <strong>Brand Logo</strong>
+    <Cluster space="sm">
+      <a href="#">Login</a>
+      <Button size="sm">Sign Up</Button>
+    </Cluster>
+  </Cluster>
+</Playground>
+
+## Vertical Alignment (`align`)
+
+Control how items align vertically. The default is `center`, which is ideal for aligning text next to buttons or icons.
+
+<Playground>
+  <Cluster align="center" space="md">
+    <div style="height: 60px; background: var(--color-neutral-200); padding: 1rem;">Tall Item</div>
+    <span>Centered text</span>
+    <Button size="sm">Small Button</Button>
+  </Cluster>
+</Playground>
+
+## Wrapping
+
+The Cluster wraps children by default. To force a single line (useful for scrolling lists), use `noWrap`.
+
+<Playground>
+  <div style="max-width: 300px; border: 1px solid red; overflow-x: auto;">
+    <Cluster noWrap space="md">
+      <Button>Item 1</Button>
+      <Button>Item 2</Button>
+      <Button>Item 3</Button>
+      <Button>Item 4</Button>
+      <Button>Item 5</Button>
+    </Cluster>
+  </div>
+</Playground>
+
+## Responsive Overrides
+
+Because this component uses standard utility classes (e.g., `justify-start`) under the hood, you can easily override props responsively using your breakpoint modifiers.
+
+```astro
+<Cluster justify="center" class="md:justify-between">
+  <Button>Prev</Button>
+  <Button>Next</Button>
+</Cluster>
+
+```
+
+## Component API
+
+| Prop      | Type                                        | Default    | Description                           |
+| --------- | ------------------------------------------- | ---------- | ------------------------------------- |
+| `space`   | `SpaceToken`                                | `'sm'`     | Gap between items.                    |
+| `justify` | `'start' \| 'center' \| 'end' \| 'between'` | `'start'`  | `justify-content` behavior.           |
+| `align`   | `'start' \| 'center' \| 'end' \| 'stretch'` | `'center'` | `align-items` behavior.               |
+| `noWrap`  | `boolean`                                   | `false`    | If true, applies `flex-wrap: nowrap`. |
+| `as`      | `string`                                    | `'div'`    | The HTML tag to render.               |

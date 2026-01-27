@@ -1,0 +1,108 @@
+---
+title: Icon
+description: A typographic wrapper that harmonizes SVGs with your text.
+sidebar:
+  order: 6
+---
+
+import { Icon, Button, Cluster, Playground } from "@viewingstudio/ui";
+import { ArrowRight, Info, Check, Settings } from "@lucide/astro";
+
+The `Icon` component is not an SVG itself; it is a **layout shell**. It wraps any SVG (from a library or inline) and forces it to conform to your system's typographic sizing and alignment rules.
+
+## Basic Usage
+
+You can pass any SVG component into the slot. The `Icon` wrapper will override its dimensions.
+
+```astro
+import { Icon } from '@viewingstudio/ui';
+import { ArrowRight } from 'lucide-astro';
+
+<Icon label="Next Step">
+  <ArrowRight />
+</Icon>
+
+```
+
+## Sizing
+
+Icons use **relative sizing** (`em`) so they automatically scale with the surrounding text.
+
+| Size     | Value    | Use Case                                                                    |
+| -------- | -------- | --------------------------------------------------------------------------- |
+| `sm`     | `0.75em` | **Cap Height.** Matches the height of uppercase letters. Ideal for Buttons. |
+| `md`     | `1em`    | **Line Height.** The default. Matches the full line height.                 |
+| `lg`     | `1.25em` | **Emphasis.** Used for feature icons or headings.                           |
+| _custom_ | _any_    | Pass any CSS value (e.g., `2rem`, `1.2ex`).                                 |
+
+<Playground>
+  <div style="font-size: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <Icon size="sm">
+        <Check />
+      </Icon>
+      <span>Small (0.75em)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <Icon size="md">
+        <Check />
+      </Icon>
+      <span>Medium (1em)</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <Icon size="lg">
+        <Check />
+      </Icon>
+      <span>Large (1.25em)</span>
+    </div>
+  </div>
+</Playground>
+
+## Common Patterns
+
+### 1. Inside Buttons
+
+<Playground>
+  <Button>
+    <Icon aria-hidden="true">
+      <Info />
+    </Icon>
+    <span>More Info</span>
+  </Button>
+</Playground>
+
+### 2. Inline Text (The `ex` unit)
+
+If you need an icon to sit inside a sentence (like a tooltip or link arrow), use the `ex` unit. This sizes the icon to the height of the lowercase "x", making it feel seamless.
+
+```astro
+<p>
+  Click the settings
+  <Icon size="1.2ex" label="Settings gear"><Settings /></Icon>
+  icon to configure.
+</p>
+
+```
+
+## Accessibility
+
+The component handles ARIA roles automatically based on whether you provide a label.
+
+- **Decorative (Default):** If no `label` is provided, the icon is hidden from screen readers (`aria-hidden="true"`).
+- **Semantic:** If `label="Settings"` is provided, it gets `role="img"` and `aria-label="Settings"`.
+
+```astro
+<Icon><ArrowRight /></Icon>
+
+<Icon label="Go to settings"><ArrowRight /></Icon>
+
+```
+
+## Component API
+
+| Prop    | Type                             | Default     | Description                                         |
+| ------- | -------------------------------- | ----------- | --------------------------------------------------- |
+| `size`  | `'sm' \| 'md' \| 'lg' \| string` | `'md'`      | The size of the icon wrapper relative to font size. |
+| `label` | `string`                         | `undefined` | Accessibility text. If omitted, icon is decorative. |
+| `class` | `string`                         | -           | Custom classes.                                     |
+| `style` | `CSSProperties`                  | -           | Custom styles.                                      |

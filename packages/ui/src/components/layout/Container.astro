@@ -1,0 +1,114 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"div"> {
+  as?: string;
+  /**
+   * The max-width of the container.
+   * - default: ~110rem (Site max)
+   * - narrow: ~45ch (Reading)
+   * - prose: ~65ch (Standard Text)
+   * - wide: ~1280px
+   * - full: 100%
+   */
+  size?: "default" | "narrow" | "prose" | "wide" | "full";
+
+  /** * Activates the full-bleed grid layout.
+   * - true: Defaults to 12 columns
+   * - 6: Sets 6 columns
+   * - 12: Sets 12 columns
+   */
+  bleed?: boolean | 6 | 12;
+}
+
+const { as: Tag = "div", size = "default", bleed = false, class: className, ...rest } = Astro.props;
+
+// 1. Generate Class List based on your CSS naming convention
+const classes = [
+  "container",
+  size !== "default" && `container--${size}`, // e.g. .container--narrow
+  bleed && "container--full-bleed", // The base trigger
+  typeof bleed === "number" && `container--full-bleed-${bleed}`, // e.g. .container--full-bleed-12
+  className,
+].filter(Boolean);
+---
+
+<Tag class:list={classes} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  /* --------------------------------------
+   * Container (Your Original CSS)
+   * -------------------------------------- */
+
+  :global(:root) {
+    --container-padding: var(--space-md-lg);
+    --container-max-width: 110rem;
+  }
+
+  .container {
+    /* Defaults */
+    --_container-padding: var(--container-padding, var(--space-md-lg));
+    --_container-max-width: var(--container-max-width, 110rem); /* Default size */
+
+    /* Variables for Modifiers */
+    --measure-sm: 45ch;
+    --measure: 65ch;
+    --measure-lg: 80rem;
+
+    /* Base Styles */
+    width: 100%;
+    max-width: var(--_container-max-width);
+    margin-inline: auto;
+    padding-inline: var(--_container-padding);
+  }
+
+  /* --- Size Modifiers --- */
+
+  .container--narrow {
+    --_container-max-width: var(--measure-sm);
+  }
+
+  .container--prose {
+    --_container-max-width: var(--measure);
+  }
+
+  .container--wide {
+    --_container-max-width: var(--measure-lg);
+  }
+
+  .container--full {
+    --_container-max-width: none;
+  }
+
+  /* --- Full Bleed Logic --- */
+
+  .container--full-bleed {
+    --_container-columns: var(--container-columns, 12); /* Default to 12 if not set */
+
+    padding-inline: 0;
+    max-width: unset;
+    display: grid;
+
+    /* 1. Left Gutter (1fr)
+      2. Content Columns (Repeated, limited by max-width math)
+      3. Right Gutter (1fr)
+    */
+    grid-template-columns:
+      minmax(0, 1fr)
+      repeat(
+        var(--_container-columns),
+        minmax(0, calc(var(--_container-max-width) / var(--_container-columns)))
+      )
+      minmax(0, 1fr);
+  }
+
+  .container--full-bleed-12 {
+    --container-columns: 12;
+  }
+
+  .container--full-bleed-6 {
+    --container-columns: 6;
+  }
+</style>

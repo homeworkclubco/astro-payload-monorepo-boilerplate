@@ -1,0 +1,67 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { SpaceToken } from "../types";
+
+interface Props extends HTMLAttributes<"div"> {
+  /** Gap between items */
+  space?: SpaceToken;
+
+  /** * Minimum width of a column before it wraps.
+   * - Presets: 'xs' (200px), 'sm' (250px), 'md' (300px), 'lg' (400px)
+   * - Custom: Any CSS length ('35ch', '150px', '20rem')
+   */
+  minItemWidth?: "xs" | "sm" | "md" | "lg" | (string & {});
+
+  /** If true, items won't stretch to fill the row height */
+  noStretch?: boolean;
+}
+
+const {
+  space = "lg",
+  minItemWidth = "sm", // Default to 250px
+  noStretch = false,
+  class: className,
+  style,
+  ...rest
+} = Astro.props;
+
+// Map presets to values
+const presets: Record<string, string> = {
+  xs: "200px",
+  sm: "250px",
+  md: "300px",
+  lg: "400px",
+};
+
+// Logic: Check if the prop is a preset key, otherwise use the raw string
+const widthValue = presets[minItemWidth] || minItemWidth;
+
+const classes = [
+  "grid",
+  noStretch && "align-start", // Leverages your global utility logic
+  className,
+];
+
+const vars = {
+  "--grid-space": `var(--space-${space})`,
+  "--grid-min-width": widthValue,
+};
+---
+
+<div class:list={classes} style={[vars, style]} {...rest}>
+  <slot />
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--grid-space);
+
+    /* * THE MAGIC FORMULA:
+     * 1. Create as many columns as fit.
+     * 2. Each column must be at least '--grid-min-width'.
+     * 3. But never wider than 100% of the container (prevents overflow on tiny screens).
+     */
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--grid-min-width), 100%), 1fr));
+  }
+</style>

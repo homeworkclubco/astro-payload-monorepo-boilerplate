@@ -1,0 +1,133 @@
+---
+title: Section
+description: A semantic layout primitive for creating themed content sections with polymorphic rendering.
+sidebar:
+  order: 7
+---
+
+import { Section, Container, Button, Playground } from "@viewingstudio/ui";
+
+The `Section` component provides a semantic wrapper for content sections with optional color scheme theming. It supports polymorphic rendering to output different HTML elements based on context.
+
+It is commonly used for:
+
+- Page sections with consistent theming
+- Header and footer regions
+- Main content areas
+- Themed content blocks
+
+## Basic Usage
+
+By default, Section renders as a `<section>` element with no styling applied.
+
+<Playground>
+  <Section>
+    <Container>
+      <h2>Section Title</h2>
+      <p>This is a basic section element with semantic HTML.</p>
+    </Container>
+  </Section>
+</Playground>
+
+## Color Scheme Theming
+
+Use the `colorScheme` prop to apply light or dark theming to the section.
+
+<Playground>
+  <Section colorScheme="light">
+    <Container>
+      <div style="background: var(--color-bg); padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--color-border);">
+        <h3>Light Theme</h3>
+        <p>This section uses the light color scheme.</p>
+      </div>
+    </Container>
+  </Section>
+</Playground>
+
+<Playground>
+  <Section colorScheme="dark">
+    <Container>
+      <div style="background: var(--color-bg); padding: 2rem; border-radius: 0.5rem; border: 1px solid var(--color-border);">
+        <h3>Dark Theme</h3>
+        <p>This section uses the dark color scheme.</p>
+      </div>
+    </Container>
+  </Section>
+</Playground>
+
+## Polymorphic Rendering
+
+Use the `as` prop to render different semantic HTML elements.
+
+<Playground>
+  <div style="display: grid; gap: 1rem;">
+    <Section as="header">
+      <Container>
+        <small>&lt;header&gt; Element</small>
+      </Container>
+    </Section>
+
+    <Section as="main">
+      <Container>
+        <small>&lt;main&gt; Element</small>
+      </Container>
+    </Section>
+
+    <Section as="footer">
+      <Container>
+        <small>&lt;footer&gt; Element</small>
+      </Container>
+    </Section>
+  </div>
+</Playground>
+
+## Nested Sections
+
+Sections can be nested with different color schemes for visual separation.
+
+<Playground>
+  <Section colorScheme="light">
+    <Container>
+      <h3>Outer Section</h3>
+      <p>This is the outer section with light theme.</p>
+
+      <Section colorScheme="dark">
+        <Container>
+          <div style="background: var(--color-bg); padding: 1rem; border-radius: 0.25rem; margin: 1rem 0;">
+            <h4>Inner Section</h4>
+            <p>Nested section with dark theme.</p>
+          </div>
+        </Container>
+      </Section>
+    </Container>
+  </Section>
+</Playground>
+
+## With Custom Classes
+
+The Section component accepts custom classes for additional styling.
+
+<Playground>
+  <Section class="py-xl" colorScheme="light">
+    <Container>
+      <div style="background: var(--color-bg); padding: 2rem; border-radius: 0.5rem;">
+        <h3>Custom Styling</h3>
+        <p>Section with custom utility classes applied.</p>
+      </div>
+    </Container>
+  </Section>
+</Playground>
+
+## Component API
+
+| Prop          | Type                                                   | Default     | Description                               |
+| ------------- | ------------------------------------------------------ | ----------- | ----------------------------------------- |
+| `as`          | `'section' \| 'div' \| 'footer' \| 'header' \| 'main'` | `'section'` | The HTML tag to render.                   |
+| `colorScheme` | `'light' \| 'dark'`                                    | —           | Apply light or dark color scheme theming. |
+| `class`       | `string`                                               | —           | Additional CSS classes to apply.          |
+
+## Data Attributes
+
+| Attribute           | Value               | Description                                              |
+| ------------------- | ------------------- | -------------------------------------------------------- |
+| `data-color-scheme` | `'light' \| 'dark'` | Set when colorScheme prop is provided for CSS targeting. |

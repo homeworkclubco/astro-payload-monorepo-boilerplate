@@ -1,4 +1,381 @@
 ---
 title: Typography
-description: ""
+description: A comprehensive typography system with font families, sizes, weights, and spacing tokens.
+sidebar:
+  order: 2
 ---
+
+The typography system provides a complete set of CSS custom properties for consistent text styling across the design system. It includes font families, size scales, weights, line heights, letter spacing, and reading measures.
+
+## Font Families
+
+The system provides three font family stacks for different use cases.
+
+```css
+/* System UI font stack (default) */
+--font-family-body:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+/* Heading font (defaults to body) */
+--font-family-heading: var(--font-family-body);
+
+/* Alternative font (defaults to body) */
+--font-family-alt: var(--font-family-body);
+```
+
+## Font Size Scale
+
+The typography system uses a modular scale with 7 size steps, each with a corresponding line height.
+
+| Token            | Font Size | Line Height | Use Case         |
+| ---------------- | --------- | ----------- | ---------------- |
+| `--font-size--2` | 11px      | 12px        | Small captions   |
+| `--font-size--1` | 14px      | 16px        | Small text       |
+| `--font-size-0`  | 16px      | 20px        | Body text (base) |
+| `--font-size-1`  | 18px      | 24px        | Large body       |
+| `--font-size-2`  | 20px      | 32px        | Small headings   |
+| `--font-size-3`  | 24px      | 36px        | Medium headings  |
+| `--font-size-4`  | 28px      | 48px        | Large headings   |
+| `--font-size-5`  | 32px      | 64px        | Display headings |
+
+## Font Weights
+
+Nine font weight variations are available for creating visual hierarchy.
+
+| Token                    | Weight | Use Case         |
+| ------------------------ | ------ | ---------------- |
+| `--font-weight-thin`     | 100    | Ultra light text |
+| `--font-weight-light`    | 300    | Light emphasis   |
+| `--font-weight-normal`   | 400    | Body text        |
+| `--font-weight-medium`   | 500    | Medium emphasis  |
+| `--font-weight-semibold` | 600    | Subheadings      |
+| `--font-weight-bold`     | 800    | Bold emphasis    |
+| `--font-weight-black`    | 900    | Heavy headings   |
+
+## Line Heights
+
+Six line height options for controlling text density.
+
+| Token                   | Value | Use Case            |
+| ----------------------- | ----- | ------------------- |
+| `--line-height-tighter` | 0.75  | Tight headings      |
+| `--line-height-tight`   | 1.0   | Compact text        |
+| `--line-height-snug`    | 1.33  | Dense paragraphs    |
+| `--line-height`         | 1.5   | Default body text   |
+| `--line-height-loose`   | 1.75  | Comfortable reading |
+
+## Letter Spacing
+
+Four letter spacing options for text emphasis and style.
+
+| Token                     | Value   | Use Case        |
+| ------------------------- | ------- | --------------- |
+| `--letter-spacing-tight`  | -0.05em | Tight headings  |
+| `--letter-spacing-normal` | 0       | Default spacing |
+| `--letter-spacing-loose`  | 0.05em  | Emphasized text |
+| `--letter-spacing-looser` | 0.17em  | Display text    |
+
+## Reading Measures
+
+Optimal line lengths for different content types, measured in character units (ch).
+
+| Token          | Value | Use Case              |
+| -------------- | ----- | --------------------- |
+| `--measure-xs` | 30ch  | Short captions        |
+| `--measure-sm` | 45ch  | Narrow text blocks    |
+| `--measure-md` | 50ch  | Standard paragraphs   |
+| `--measure-lg` | 75ch  | Wide content          |
+| `--measure-xl` | 100ch | Full-width text       |
+| `--measure`    | 65ch  | Default reading width |
+
+### Heading Measures
+
+Pre-configured measures for different heading levels:
+
+```css
+--measure-heading-1: var(--measure-xs); /* 30ch */
+--measure-heading-2: var(--measure-sm); /* 45ch */
+--measure-heading-3: var(--measure-sm); /* 45ch */
+--measure-heading-4: var(--measure-sm); /* 45ch */
+--measure-heading-5: var(--measure-sm); /* 45ch */
+--measure-heading-6: var(--measure-sm); /* 45ch */
+```
+
+## Usage Examples
+
+### Body Text Classes
+
+```css
+/* Basic body text */
+.body-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height);
+  max-width: var(--measure);
+}
+
+/* Large body text for emphasis */
+.body-large {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height);
+}
+
+/* Small body text */
+.body-small {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size--1);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-snug);
+}
+```
+
+### Heading Classes
+
+```css
+/* Display heading (h1) */
+.heading-display {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-5);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  max-width: var(--measure-heading-1);
+}
+
+/* Main heading (h2) */
+.heading-main {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-4);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+  max-width: var(--measure-heading-2);
+}
+
+/* Section heading (h3) */
+.heading-section {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  max-width: var(--measure-heading-3);
+}
+
+/* Subheading (h4) */
+.heading-sub {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+  max-width: var(--measure-heading-4);
+}
+```
+
+### Utility Classes
+
+```css
+/* Text alignment utilities */
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}
+
+/* Font weight utilities */
+.font-light {
+  font-weight: var(--font-weight-light);
+}
+.font-normal {
+  font-weight: var(--font-weight-normal);
+}
+.font-medium {
+  font-weight: var(--font-weight-medium);
+}
+.font-semibold {
+  font-weight: var(--font-weight-semibold);
+}
+.font-bold {
+  font-weight: var(--font-weight-bold);
+}
+
+/* Letter spacing utilities */
+.tracking-tight {
+  letter-spacing: var(--letter-spacing-tight);
+}
+.tracking-normal {
+  letter-spacing: var(--letter-spacing-normal);
+}
+.tracking-loose {
+  letter-spacing: var(--letter-spacing-loose);
+}
+
+/* Line height utilities */
+.leading-tight {
+  line-height: var(--line-height-tight);
+}
+.leading-normal {
+  line-height: var(--line-height);
+}
+.leading-loose {
+  line-height: var(--line-height-loose);
+}
+```
+
+### Component-Specific Typography
+
+```css
+/* Card component typography */
+.card-title {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-2);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+  margin-bottom: var(--space-sm);
+}
+
+.card-description {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height);
+  color: var(--color-text-muted);
+}
+
+/* Button typography */
+.button-text {
+  font-family: var(--font-family-body);
+  font-size: var(--font-size-0);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: 1;
+}
+
+.button-large {
+  font-size: var(--font-size-1);
+  font-weight: var(--font-weight-semibold);
+}
+
+.button-small {
+  font-size: var(--font-size--1);
+  font-weight: var(--font-weight-medium);
+}
+```
+
+### Responsive Typography
+
+```css
+/* Responsive body text */
+.responsive-body {
+  font-size: var(--font-size-0);
+  line-height: var(--line-height);
+}
+
+@media (min-width: 768px) {
+  .responsive-body {
+    font-size: var(--font-size-1);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-body {
+    font-size: var(--font-size-2);
+  }
+}
+
+/* Responsive headings */
+.responsive-heading {
+  font-size: var(--font-size-3);
+  line-height: var(--line-height-tight);
+}
+
+@media (min-width: 768px) {
+  .responsive-heading {
+    font-size: var(--font-size-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-heading {
+    font-size: var(--font-size-5);
+  }
+}
+```
+
+## Best Practices
+
+- **Reading Comfort**: Use `--measure` (65ch) for body text to ensure optimal reading comfort
+- **Visual Hierarchy**: Combine font size, weight, and spacing to create clear hierarchy
+- **Line Height**: Use tighter line heights for headings and looser for body text
+- **Letter Spacing**: Apply negative letter spacing to large headings for better proportions
+- **Consistency**: Stick to the defined scale rather than using arbitrary values
+
+## Integration
+
+The typography tokens are automatically available in all components that import the UI package. Use them in your component's `<style>` blocks:
+
+```astro
+---
+// Component file
+---
+<style>
+  .my-component {
+    font-size: var(--font-size-1);
+    font-weight: var(--font-weight-medium);
+  }
+</style>
+```
+
+### In Astro Components
+
+```astro
+---
+// Example component using typography tokens
+---
+<style>
+  .title {
+    font-family: var(--font-family-heading);
+    font-size: var(--font-size-3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  .content {
+    font-family: var(--font-family-body);
+    font-size: var(--font-size-0);
+    line-height: var(--line-height);
+    max-width: var(--measure);
+  }
+</style>
+
+<h1 class:title>Title</h1>
+<p class:content>Content text</p>
+```
+
+### In CSS Files
+
+```css
+/* global.css or component-specific CSS */
+.article {
+  font-family: var(--font-family-body);
+}
+
+.article h2 {
+  font-family: var(--font-family-heading);
+  font-size: var(--font-size-3);
+  font-weight: var(--font-weight-semibold);
+}
+
+.article p {
+  font-size: var(--font-size-0);
+  line-height: var(--line-height);
+  max-width: var(--measure);
+}
+```

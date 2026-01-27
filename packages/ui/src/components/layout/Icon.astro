@@ -1,0 +1,83 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+interface Props extends HTMLAttributes<"span"> {
+  /** * Accessibility label.
+   * Note: Most icon libraries allow you to pass aria-label directly to their component,
+   * but passing it here ensures the wrapper handles the role correctly.
+   */
+  label?: string;
+
+  /**
+   * Relative size to the current font-size.
+   * - 1em = Matches line-height (Default)
+   * - 0.75em = Matches Uppercase letter height (Cap Height) - BEST FOR TEXT
+   */
+  size?: "sm" | "md" | "lg" | string;
+}
+
+const {
+  label,
+  size = "md", // Default to 1em (text size)
+  class: className,
+  style,
+  ...rest
+} = Astro.props;
+
+const isDecorative = !label;
+
+// Map presets
+const sizes: Record<string, string> = {
+  sm: "0.75em",
+  md: "1em",
+  lg: "1.25em",
+  inline: "1.2ex",
+};
+
+const vars = {
+  "--icon-size": sizes[size] || size,
+};
+---
+
+<span
+  class:list={["icon", className]}
+  style={[vars, style]}
+  aria-hidden={isDecorative ? "true" : undefined}
+  aria-label={label}
+  role={isDecorative ? "img" : undefined}
+  {...rest}
+>
+  <slot />
+</span>
+
+<style>
+  .icon {
+    /* 1. The Container Dimensions */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    height: var(--icon-size);
+    width: var(--icon-size);
+
+    /* 2. Alignment relative to text */
+    vertical-align: middle;
+    /* Optional: Fine-tune baseline if it feels "high" */
+    position: relative;
+    /* top: -0.05em; */
+
+    /* 3. Color inheritance */
+    color: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* * FORCE THE CHILD SVG TO BEHAVE 
+   * This selector targets any SVG passed into the slot
+   */
+  .icon :global(svg) {
+    height: 100%;
+    width: 100%;
+    stroke: currentColor;
+    fill: none; /* Reset fill just in case */
+  }
+</style>
